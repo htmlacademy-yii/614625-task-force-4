@@ -3,16 +3,29 @@
 class Task
 {
     const STATUS_NEW = 'new';
-    const STATUS_CANCEL = 'cancel';
-    const STATUS_WORK = 'work';
-    const STATUS_COMPLETE = 'complete';
-    const STATUS_FAIL = 'fail';
+    const STATUS_CANCELED = 'cancel';
+    const STATUS_WORKING = 'work';
+    const STATUS_COMPLETED = 'complete';
+    const STATUS_FAILED = 'fail';
+
+    const ACTION_START = 'start';
+    const ACTION_CANCEL = 'cancel';
+    const ACTION_RESPOND = 'respond';
+    const ACTION_FAIL = 'fail';
+    const ACTION_COMPLETE = 'complete';
 
     public $status;
-    public $idExecutor;
-    public $idCustomer;
+    public $customerId;
+    public $executorId;
 
-    function getAction($status){
+    public function __construct($status, $customerId, $executorId = null){
+        $this->status = $status;
+        $this->customerId = $customerId;
+        $this->executorId = $executorId;
+    }
+
+    public function getActions( $currentUserId){
+        $this->status;
         if ($status === 'new'){
             return ['cancel', 'work'];
         }
@@ -24,7 +37,7 @@ class Task
         }
     }
 
-    function getStatus($action){
+    public function getStatus($action){
         if ($action === 'new'){
 
         }
