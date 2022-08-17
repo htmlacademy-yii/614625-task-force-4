@@ -48,10 +48,21 @@ class Task
         }
     }
 
-    //Возвращать имя статуса, в который перейдёт задание после выполнения конкретного действия;
     public function getStatus($action){
-        if ($action === 'new'){
-
+        if ($action === self::ACTION_START){
+            return self::STATUS_NEW;
+        }
+        if ($action === self::ACTION_CANCEL){
+            return self::STATUS_CANCELED;
+        }
+        if ($action === self::ACTION_RESPOND){
+            return self::STATUS_WORKING;
+        }
+        if ($action === self::ACTION_FAIL){
+            return self::STATUS_FAILED;
+        }
+        if ($action === self:: ACTION_COMPLETE){
+            return self::STATUS_COMPLETED;
         }
     }
 }
