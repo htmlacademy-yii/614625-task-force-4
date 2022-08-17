@@ -25,23 +25,33 @@ class Task
     }
 
     public function getActions( $currentUserId){
-        $this->status;
-        if ($status === 'new'){
-            return ['cancel', 'work'];
+        if ($currentUserId === 1 && $this->status === self::STATUS_NEW){
+            return self::ACTION_CANCEL;
         }
-        if ($status === 'cancel' || $status === 'complete' || $status === 'fail'){
-            return '';
+        if ($currentUserId !== 1 && $this->status === self::STATUS_NEW){
+            return self::ACTION_RESPOND;
         }
-        if ($status === 'work'){
-            return ['complete', 'fail'];
+        if ($this->status === self::STATUS_CANCELED){
+            return null;
+        }
+        if ($currentUserId === 1 && $this->status === self::STATUS_WORKING){
+            return self::ACTION_COMPLETE;
+        }
+        if ($currentUserId !== 1 && $this->status === self::STATUS_WORKING){
+            return [self::ACTION_COMPLETE, self::ACTION_CANCEL];
+        }
+        if ($this->status === self::STATUS_COMPLETED){
+            return null;
+        }
+        if ($this->status === self::STATUS_FAILED){
+            return null;
         }
     }
 
+    //Возвращать имя статуса, в который перейдёт задание после выполнения конкретного действия;
     public function getStatus($action){
         if ($action === 'new'){
 
         }
     }
-    //Определять список из всех доступных действий и статусов;
-    //Возвращать имя статуса, в который перейдёт задание после выполнения конкретного действия;
 }
