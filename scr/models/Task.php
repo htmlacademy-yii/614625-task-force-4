@@ -3,10 +3,10 @@
 class Task
 {
     const STATUS_NEW = 'new';
-    const STATUS_CANCELED = 'cancel';
-    const STATUS_WORKING = 'work';
-    const STATUS_COMPLETED = 'complete';
-    const STATUS_FAILED = 'fail';
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_WORKING = 'working';
+    const STATUS_COMPLETED = 'completed';
+    const STATUS_FAILED = 'failed';
 
     const ACTION_START = 'start';
     const ACTION_CANCEL = 'cancel';
@@ -25,19 +25,19 @@ class Task
     }
 
     public function getActions( $currentUserId){
-        if ($currentUserId === 1 && $this->status === self::STATUS_NEW){
+        if ($currentUserId && $this->status === self::STATUS_NEW){
             return self::ACTION_CANCEL;
         }
-        if ($currentUserId !== 1 && $this->status === self::STATUS_NEW){
+        if (!$currentUserId && $this->status === self::STATUS_NEW){
             return self::ACTION_RESPOND;
         }
         if ($this->status === self::STATUS_CANCELED){
             return null;
         }
-        if ($currentUserId === 1 && $this->status === self::STATUS_WORKING){
+        if ($currentUserId && $this->status === self::STATUS_WORKING){
             return self::ACTION_COMPLETE;
         }
-        if ($currentUserId !== 1 && $this->status === self::STATUS_WORKING){
+        if (!$currentUserId && $this->status === self::STATUS_WORKING){
             return [self::ACTION_COMPLETE, self::ACTION_CANCEL];
         }
         if ($this->status === self::STATUS_COMPLETED){
