@@ -25,19 +25,19 @@ class Task
     }
 
     public function getActions( $currentUserId){
-        if ($currentUserId && $this->status === self::STATUS_NEW){
+        if ($currentUserId === $customerId && $this->status === self::STATUS_NEW){
             return self::ACTION_CANCEL;
         }
-        if (!$currentUserId && $this->status === self::STATUS_NEW){
+        if ($currentUserId !== $customerId && $this->status === self::STATUS_NEW){
             return self::ACTION_RESPOND;
         }
         if ($this->status === self::STATUS_CANCELED){
             return null;
         }
-        if ($currentUserId && $this->status === self::STATUS_WORKING){
+        if ($currentUserId === $customerId && $this->status === self::STATUS_WORKING){
             return self::ACTION_COMPLETE;
         }
-        if (!$currentUserId && $this->status === self::STATUS_WORKING){
+        if ($currentUserId !== $customerId && $this->status === self::STATUS_WORKING){
             return [self::ACTION_COMPLETE, self::ACTION_CANCEL];
         }
         if ($this->status === self::STATUS_COMPLETED){
