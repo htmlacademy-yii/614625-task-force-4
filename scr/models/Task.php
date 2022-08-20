@@ -28,7 +28,7 @@ class Task
         switch ($this->status){
             case self::STATUS_NEW:
                 if ($currentUserId === $this->customerId){
-                    return self::ACTION_CANCEL;
+                    return [self::ACTION_CANCEL, self::ACTION_START];
                     break;
                 }
                 return self::ACTION_RESPOND;
