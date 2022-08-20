@@ -40,8 +40,7 @@ class Task
                 if ($currentUserId === $this->executorId){
                     return [self::ACTION_COMPLETE];
                 }
-                
-
+                return [];
             case self::STATUS_COMPLETED:
                 return [];
             case self::STATUS_FAILED:
