@@ -24,7 +24,7 @@ class Task
         $this->executorId = $executorId;
     }
 
-    public function getActions( $currentUserId){
+    public function getActions($currentUserId){
         if ($currentUserId === $customerId && $this->status === self::STATUS_NEW){
             return self::ACTION_CANCEL;
         }
@@ -38,7 +38,7 @@ class Task
             return self::ACTION_COMPLETE;
         }
         if ($currentUserId !== $customerId && $this->status === self::STATUS_WORKING){
-            return [self::ACTION_COMPLETE, self::ACTION_CANCEL];
+            return self::ACTION_COMPLETE;
         }
         if ($this->status === self::STATUS_COMPLETED){
             return null;
