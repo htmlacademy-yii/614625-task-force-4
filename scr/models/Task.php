@@ -25,26 +25,30 @@ class Task
     }
 
     public function getActions($currentUserId){
-        if ($currentUserId === $customerId && $this->status === self::STATUS_NEW){
-            return self::ACTION_CANCEL;
-        }
-        if ($currentUserId !== $customerId && $this->status === self::STATUS_NEW){
-            return self::ACTION_RESPOND;
-        }
-        if ($this->status === self::STATUS_CANCELED){
-            return null;
-        }
-        if ($currentUserId === $customerId && $this->status === self::STATUS_WORKING){
-            return self::ACTION_COMPLETE;
-        }
-        if ($currentUserId !== $customerId && $this->status === self::STATUS_WORKING){
-            return self::ACTION_COMPLETE;
-        }
-        if ($this->status === self::STATUS_COMPLETED){
-            return null;
-        }
-        if ($this->status === self::STATUS_FAILED){
-            return null;
+        switch ($this->status){
+            case self::STATUS_NEW:
+                if ($currentUserId === $this->customerId){
+                    return self::ACTION_CANCEL;
+                    break;
+                }
+                return self::ACTION_RESPOND;
+                break;
+            case self::STATUS_CANCELED:
+                return null;
+                break;
+            case self::STATUS_WORKING:
+                if ($currentUserId === $this->customerId ){
+                    return self::ACTION_COMPLETE;
+                    break;
+                }
+                return self::ACTION_COMPLETE;
+                break;
+            case self::STATUS_COMPLETED:
+                return null;
+                break;
+            case self::STATUS_FAILED:
+                return null;
+                break;
         }
     }
 
