@@ -29,26 +29,20 @@ class Task
             case self::STATUS_NEW:
                 if ($currentUserId === $this->customerId){
                     return [self::ACTION_CANCEL, self::ACTION_START];
-                    break;
                 }
                 return [self::ACTION_RESPOND];
-                break;
             case self::STATUS_CANCELED:
                 return [];
-                break;
             case self::STATUS_WORKING:
                 if ($currentUserId === $this->customerId ){
                     return [self::ACTION_COMPLETE];
-                    break;
                 }
                 return [self::ACTION_COMPLETE];
-                break;
+
             case self::STATUS_COMPLETED:
                 return [];
-                break;
             case self::STATUS_FAILED:
                 return [];
-                break;
         }
     }
 
