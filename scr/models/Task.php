@@ -37,11 +37,11 @@ class Task
                 if ($currentUserId === $this->customerId ){
                     return [self::ACTION_COMPLETE];
                 }
+                if ($currentUserId === $this->executorId){
+                    return [self::ACTION_CANCEL, self::ACTION_FAIL];
+                }
                 return [];
-            case self::STATUS_COMPLETED:
-                return [];
-            case self::STATUS_FAILED:
-                return [];
+            return [];
         }
     }
 
