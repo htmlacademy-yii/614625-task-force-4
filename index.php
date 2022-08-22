@@ -1,4 +1,5 @@
 <?php
-require __DIR__ . '/scr/models/Task.php';
+require 'vendor/autoload.php';
+use TaskForce\models\Task;
 
 $task = new Task(Task::STATUS_NEW,1);

@@ -1,0 +1,15 @@
+{
+    "name": "htmlacademy/task-force",
+    "autoload": {
+        "psr-4": {
+            "TaskForce\\": "scr/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Apocalipso",
+            "email": "pruchkin-maksim@yandex.ru"
+        }
+    ],
+    "require": {}
+}
