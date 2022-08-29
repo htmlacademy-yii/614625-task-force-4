@@ -30,8 +30,7 @@ CREATE TABLE task (
     category int NOT NULL REFERENCES category(id),
     location int NOT NULL REFERENCES location(id),
     budget int NOT NULL,
-    date_completion datetime NOT NULL,
-    files varchar(255)
+    date_completion datetime NOT NULL
 );
 
 CREATE TABLE category(
@@ -63,3 +62,15 @@ CREATE TABLE responses(
     txt varchar(255) NOT NULL,
     price int NOT NULL
 );
+
+CREATE TABLE files(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    creation_time datetime NOT NULL,
+    file_name varchar(122) NOT NULL
+)
+
+CREATE TABLE task_files(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    task_id NOT NULL REFERENCES task(id),
+    file_id NOT NULL REFERENCES files(id)
+)
