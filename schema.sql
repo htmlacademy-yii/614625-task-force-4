@@ -1,48 +1,54 @@
 CREATE DATABASE taskforse CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE taskforse;
 
-/*
-сущности таблицы taskforce
-пользователь +, 
-задание +,
-категория задания+,
-отзывы,
-локация +,
-отклики
-*/
-
 CREATE TABLE users (
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
     name varchar(122) NOT NULL,
     email varchar(64) NOT NULL UNIQUE,
-    location int NOT NULL REFERENCES location(id),
+    city_id int NOT NULL REFERENCES cities(id),
     password varchar(64) NOT NULL,
-    customer int,
-    contact varchar(122)
+    is_customer tinyint(1),
+    telegram varchar(64) NOT NULL,
+    phone varchar(64) NOT NULL,
+    avatar varchar(64) NOT NULL,
+    category_id int NOT NULL REFERENCES categories(id)
 );
 
-CREATE TABLE task (
+CREATE table cities(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    creation_time datetime NOT NULL,
+    name varchar(122) NOT NULL UNIQUE,
+    width float NOT NULL,
+    longitude float NOT NULL
+);
+
+CREATE TABLE tasks (
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
     title varchar(122) NOT NULL,
     description varchar(255) NOT NULL,
-    category int NOT NULL REFERENCES category(id),
-    location int NOT NULL REFERENCES location(id),
+    category_id int NOT NULL REFERENCES category(id),
+    location_id int NOT NULL REFERENCES location(id),
+    customer_id int NOT NULL REFERENCES users(id),
+    executor_id int NOT NULL REFERENCES users(id),
+    status varchar(64) NOT NULL,
     budget int NOT NULL,
     date_completion datetime NOT NULL
 );
 
-CREATE TABLE category(
+CREATE TABLE categories(
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
     name varchar(64) NOT NULL
 );
 
-CREATE TABLE location(
+CREATE TABLE locations(
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
-    name varchar(122) NOT NULL UNIQUE
+    name varchar(122) NOT NULL UNIQUE,
+    width float NOT NULL,
+    longitude float NOT NULL
 );
 
 CREATE TABLE reviews(
@@ -50,27 +56,28 @@ CREATE TABLE reviews(
     creation_time datetime NOT NULL,
     task int NOT NULL REFERENCES task(id),
     star int NOT NULL,
-    user_id int NOT NULL REFERENCES users,
-    txt varchar(255)
+    user_id int NOT NULL REFERENCES users(id),
+    text varchar(255)
 );
 
 CREATE TABLE responses(
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
-    task int NOT NULL REFERENCES task(id),
+    task_id int NOT NULL REFERENCES task(id),
     user_id int NOT NULL REFERENCES users(id),
-    txt varchar(255) NOT NULL,
-    price int NOT NULL
+    text varchar(255) NOT NULL,
+    price int NOT NULL,
+    is_rejected tinyint(1)
 );
 
 CREATE TABLE files(
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
-    file_name varchar(122) NOT NULL
-)
+    name varchar(122) NOT NULL
+);
 
 CREATE TABLE task_files(
     id int PRIMARY KEY AUTO_INCREMENT,
-    task_id NOT NULL REFERENCES task(id),
-    file_id NOT NULL REFERENCES files(id)
-)
+    task_id int NOT NULL REFERENCES task(id),
+    file_id int NOT NULL REFERENCES files(id)
+);
