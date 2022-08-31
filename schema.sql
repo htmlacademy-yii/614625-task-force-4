@@ -12,7 +12,7 @@ CREATE TABLE users (
     telegram varchar(64) NOT NULL,
     phone varchar(64) NOT NULL,
     avatar varchar(64) NOT NULL,
-    category_id int NOT NULL REFERENCES categories(id)
+    category_id int NOT NULL REFERENCES categories_user(id)
 );
 
 CREATE table cities(
@@ -41,6 +41,12 @@ CREATE TABLE categories(
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
     name varchar(64) NOT NULL
+);
+
+CREATE TABLE categories_user(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    user_id int NOT NULL REFERENCES users(id),
+    category int NOT NULL REFERENCES categories(id)
 );
 
 CREATE TABLE locations(
