@@ -19,8 +19,8 @@ CREATE table cities(
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
     name varchar(122) NOT NULL UNIQUE,
-    width float NOT NULL,
-    longitude float NOT NULL
+    width decimal(11,8) NOT NULL,
+    latitude decimal(11,8) NOT NULL
 );
 
 CREATE TABLE tasks (
@@ -32,7 +32,7 @@ CREATE TABLE tasks (
     location_id int NOT NULL REFERENCES location(id),
     customer_id int NOT NULL REFERENCES users(id),
     executor_id int NOT NULL REFERENCES users(id),
-    status varchar(64) NOT NULL,
+    status varchar(64),
     budget int NOT NULL,
     date_completion datetime NOT NULL
 );
@@ -47,15 +47,15 @@ CREATE TABLE locations(
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
     name varchar(122) NOT NULL UNIQUE,
-    width float NOT NULL,
-    longitude float NOT NULL
+    width decimal(11,8) NOT NULL,
+    latitude decimal(11,8) NOT NULL
 );
 
 CREATE TABLE reviews(
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
     task int NOT NULL REFERENCES task(id),
-    star int NOT NULL,
+    stars tinyint(5) NOT NULL,
     user_id int NOT NULL REFERENCES users(id),
     text varchar(255)
 );
