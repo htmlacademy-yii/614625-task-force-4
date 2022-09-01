@@ -30,8 +30,8 @@ CREATE TABLE tasks (
     category_id int NOT NULL REFERENCES category(id),
     location_id int NOT NULL REFERENCES location(id),
     customer_id int NOT NULL REFERENCES users(id),
-    executor_id int NOT NULL REFERENCES users(id),
-    status varchar(64),
+    executor_id int REFERENCES users(id),
+    status varchar(64) NOT NULL,
     budget int NOT NULL,
     date_completion datetime NOT NULL
 );
