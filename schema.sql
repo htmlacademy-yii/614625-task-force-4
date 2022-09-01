@@ -11,15 +11,14 @@ CREATE TABLE users (
     is_customer tinyint(1),
     telegram varchar(64) NOT NULL,
     phone varchar(64) NOT NULL,
-    avatar varchar(64) NOT NULL,
-    category_id int NOT NULL REFERENCES categories_user(id)
+    avatar varchar(64) NOT NULL
 );
 
 CREATE table cities(
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
     name varchar(122) NOT NULL UNIQUE,
-    width decimal(11,8) NOT NULL,
+    longitude decimal(11,8) NOT NULL,
     latitude decimal(11,8) NOT NULL
 );
 
@@ -43,17 +42,17 @@ CREATE TABLE categories(
     name varchar(64) NOT NULL
 );
 
-CREATE TABLE categories_user(
+CREATE TABLE user_categories(
     id int PRIMARY KEY AUTO_INCREMENT,
     user_id int NOT NULL REFERENCES users(id),
-    category int NOT NULL REFERENCES categories(id)
+    category_id int NOT NULL REFERENCES categories(id)
 );
 
 CREATE TABLE locations(
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
     name varchar(122) NOT NULL UNIQUE,
-    width decimal(11,8) NOT NULL,
+    longitude decimal(11,8) NOT NULL,
     latitude decimal(11,8) NOT NULL
 );
 
