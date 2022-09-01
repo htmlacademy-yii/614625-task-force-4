@@ -59,7 +59,7 @@ CREATE TABLE locations(
 CREATE TABLE reviews(
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
-    task int NOT NULL REFERENCES task(id),
+    task_id int NOT NULL REFERENCES task(id),
     stars tinyint(5) NOT NULL,
     user_id int NOT NULL REFERENCES users(id),
     text varchar(255)
