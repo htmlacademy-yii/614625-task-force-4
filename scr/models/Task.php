@@ -1,6 +1,18 @@
 <?php
 namespace TaskForce\models;
 
+abstract class Action{
+    abstract public function actionStart();
+
+    abstract public function actionCancel();
+
+    abstract public function actionRespond();
+
+    abstract public function actionFail();
+
+    abstract public function actionComplete();
+}
+
 class Task
 {
     const STATUS_NEW = 'new';
