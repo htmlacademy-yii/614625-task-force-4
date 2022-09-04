@@ -1,7 +1,8 @@
 <?php
 namespace TaskForce\models;
 
-abstract class Action{
+abstract class Action
+{
     abstract public function actionStart();
 
     abstract public function actionCancel();
@@ -11,6 +12,30 @@ abstract class Action{
     abstract public function actionFail();
 
     abstract public function actionComplete();
+}
+
+class FilledAction extends Action
+{
+    public function actionStart()
+    {
+
+    }
+    public function actionCancel()
+    {
+
+    }
+    public function actionRespond()
+    {
+
+    }
+    public function actionFail()
+    {
+
+    }
+    public function actionComplete()
+    {
+
+    }
 }
 
 class Task
