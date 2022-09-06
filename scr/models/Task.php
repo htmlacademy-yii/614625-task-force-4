@@ -1,42 +1,11 @@
 <?php
 namespace TaskForce\models;
 
-abstract class Action
-{
-    abstract public function actionStart();
-
-    abstract public function actionCancel();
-
-    abstract public function actionRespond();
-
-    abstract public function actionFail();
-
-    abstract public function actionComplete();
-}
-
-class FilledAction extends Action
-{
-    public function actionStart()
-    {
-
-    }
-    public function actionCancel()
-    {
-
-    }
-    public function actionRespond()
-    {
-
-    }
-    public function actionFail()
-    {
-
-    }
-    public function actionComplete()
-    {
-
-    }
-}
+use TaskForce\actions\ActionStart;
+use TaskForce\actions\ActionCancel;
+use TaskForce\actions\ActionRespond;
+use TaskForce\actions\ActionFail;
+use TaskForce\actions\ActionComplete;
 
 class Task
 {
@@ -62,25 +31,24 @@ class Task
         $this->executorId = $executorId;
     }
 
-    public function getActions($currentUserId){
-        switch ($this->status){
-            case self::STATUS_NEW:
-                if ($currentUserId === $this->customerId){
-                    return [self::ACTION_CANCEL, self::ACTION_START];
-                }
-                return [self::ACTION_RESPOND];
-            case self::STATUS_CANCELED:
-                return [];
-            case self::STATUS_WORKING:
-                if ($currentUserId === $this->customerId ){
-                    return [self::ACTION_COMPLETE];
-                }
-                if ($currentUserId === $this->executorId){
-                    return [self::ACTION_FAIL];
-                }
-                return [];
-            return [];
+    public function getActions($currentId){
+        $actions = [];
+        if(ActionStart::checkVerification($this->customerId, $this->executorId, $currentId)){
+            $actions[] = new ActionStart;
         }
+        if(ActionCancel::checkVerification($this->customerId, $this->executorId, $currentId)){
+            $actions[] = new ActionCancel;
+        }
+        if(ActionRespond::checkVerification($this->customerId, $this->executorId, $currentId)){
+            $actions[] = new ActionRespond;
+        }
+        if(ActionFail::checkVerification($this->customerId, $this->executorId, $currentId)){
+            $actions[] = new ActionFail;
+        }
+        if(ActionComplete::checkVerification($this->customerId, $this->executorId, $currentId)){
+            $actions[] = new ActionComplete;
+        }
+        return $actions;
     }
 
     public function getStatus($action){
