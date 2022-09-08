@@ -1,12 +1,16 @@
 <?php
 namespace TaskForce\actions;
 
-class ActionCancel extends Action{
-    protected $name = 'Отменить';
-    protected $internalName = 'cancel';
+use TaskForce\models\Task;
 
-    public static function checkVerification($customerId, $executorId, $currentId){
-        if($customerId === $currentId){
+class ActionCancel extends AbstractAction{
+    protected string $name = 'Отменить';
+    protected string $internalName = 'cancel';
+
+    public static function checkVerification(Task $task, int $currentId) : bool
+    {
+        if($task->customerId === $currentId && $task->status === Task::STATUS_CANCELED)
+        {
             return true;
         }
         return false;

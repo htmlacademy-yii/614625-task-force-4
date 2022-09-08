@@ -33,19 +33,19 @@ class Task
 
     public function getActions($currentId){
         $actions = [];
-        if(ActionStart::checkVerification($this->customerId, $this->executorId, $currentId)){
+        if(ActionStart::checkVerification($this, $currentId)){
             $actions[] = new ActionStart;
         }
-        if(ActionCancel::checkVerification($this->customerId, $this->executorId, $currentId)){
+        if(ActionCancel::checkVerification($this, $currentId)){
             $actions[] = new ActionCancel;
         }
-        if(ActionRespond::checkVerification($this->customerId, $this->executorId, $currentId)){
+        if(ActionRespond::checkVerification($this, $currentId)){
             $actions[] = new ActionRespond;
         }
-        if(ActionFail::checkVerification($this->customerId, $this->executorId, $currentId)){
+        if(ActionFail::checkVerification($this, $currentId)){
             $actions[] = new ActionFail;
         }
-        if(ActionComplete::checkVerification($this->customerId, $this->executorId, $currentId)){
+        if(ActionComplete::checkVerification($this, $currentId)){
             $actions[] = new ActionComplete;
         }
         return $actions;

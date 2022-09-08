@@ -1,12 +1,16 @@
 <?php
 namespace TaskForce\actions;
 
-class ActionStart extends Action{
-    protected $name = 'Начать';
-    protected $internalName = 'start';
+use TaskForce\models\Task;
 
-    public static function checkVerification($customerId, $executorId, $currentId){
-        if($customerId === $currentId){
+class ActionStart extends AbstractAction{
+    protected string $name = 'Начать';
+    protected string $internalName = 'start';
+
+    public static function checkVerification(Task $task, int $currentId) : bool
+    {   
+        if($task->customerId === $currentId && $task->status === Task::STATUS_NEW)
+        {
             return true;
         }
         return false;

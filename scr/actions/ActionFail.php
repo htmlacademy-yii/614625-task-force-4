@@ -1,12 +1,16 @@
 <?php
 namespace TaskForce\actions;
 
-class ActionFail extends Action{
-    protected $name = 'Провалить';
-    protected $internalName = 'fail';
+use TaskForce\models\Task;
 
-    public static function checkVerification($customerId, $executorId, $currentId){
-        if($executorId === $currentId){
+class ActionFail extends AbstractAction{
+    protected string $name = 'Провалить';
+    protected string $internalName = 'fail';
+
+    public static function checkVerification(Task $task, int $currentId) : bool
+    {
+        if($task->executorId === $currentId && $task->status === Task::STATUS_FAILED)
+        {
             return true;
         }
         return false;

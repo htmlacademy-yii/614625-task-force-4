@@ -2,4 +2,4 @@
 require 'vendor/autoload.php';
 use TaskForce\models\Task;
 
-$task = new Task(Task::STATUS_NEW,1,2);
+$task = new Task(Task::STATUS_WORKING,1,2);

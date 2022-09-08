@@ -1,12 +1,16 @@
 <?php
 namespace TaskForce\actions;
 
-class ActionComplete extends Action{
-    protected $name = 'Завершить';
-    protected $internalName = 'complete';
+use TaskForce\models\Task;
 
-    public static function checkVerification($customerId, $executorId, $currentId){
-        if($customerId === $currentId){
+class ActionComplete extends AbstractAction{
+    protected string $name = 'Завершить';
+    protected string $internalName = 'complete';
+
+    public static function checkVerification(Task $task, int $currentId) : bool
+    {
+        if($task->customerId === $currentId && $task->status === Task::STATUS_WORKING)
+        {
             return true;
         }
         return false;
