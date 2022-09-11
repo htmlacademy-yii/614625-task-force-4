@@ -9,10 +9,6 @@ class ActionStart extends AbstractAction{
 
     public static function checkVerification(Task $task, int $currentId) : bool
     {   
-        if($task->customerId === $currentId && $task->status === Task::STATUS_NEW)
-        {
-            return true;
-        }
-        return false;
+        return $task->customerId === $currentId && $task->status === Task::STATUS_NEW;
     }
 }

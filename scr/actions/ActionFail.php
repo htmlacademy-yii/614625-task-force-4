@@ -9,10 +9,6 @@ class ActionFail extends AbstractAction{
 
     public static function checkVerification(Task $task, int $currentId) : bool
     {
-        if($task->executorId === $currentId && $task->status === Task::STATUS_FAILED)
-        {
-            return true;
-        }
         return false;
     }
 }
