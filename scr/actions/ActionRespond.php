@@ -9,6 +9,9 @@ class ActionRespond extends AbstractAction{
 
     public static function checkVerification(Task $task, int $currentId) :bool
     {
+        if($currentId === $task->customerId){
+            return false;
+        }
         return $currentId && $task->status === Task::STATUS_NEW;
     }
 }
