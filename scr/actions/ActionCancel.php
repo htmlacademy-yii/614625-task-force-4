@@ -9,6 +9,6 @@ class ActionCancel extends AbstractAction{
 
     public static function checkVerification(Task $task, int $currentId) : bool
     {
-        return $currentId===$task->customerId;
+        return $currentId===$task->customerId && $task->status === Task::STATUS_CANCELED;
     }
 }

@@ -12,6 +12,6 @@ class ActionRespond extends AbstractAction{
         if($currentId === $task->customerId){
             return false;
         }
-        return $currentId && $task->status === Task::STATUS_NEW;
+        return $task->status === Task::STATUS_NEW;
     }
 }
