@@ -1,0 +1,2 @@
+<?php
+namespace TaskForce\exceptions;
