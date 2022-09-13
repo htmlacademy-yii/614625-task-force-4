@@ -1,6 +1,12 @@
 <?php
 namespace TaskForce\models;
 
+use TaskForce\actions\ActionStart;
+use TaskForce\actions\ActionCancel;
+use TaskForce\actions\ActionRespond;
+use TaskForce\actions\ActionFail;
+use TaskForce\actions\ActionComplete;
+
 class Task
 {
     const STATUS_NEW = 'new';
@@ -25,25 +31,24 @@ class Task
         $this->executorId = $executorId;
     }
 
-    public function getActions($currentUserId){
-        switch ($this->status){
-            case self::STATUS_NEW:
-                if ($currentUserId === $this->customerId){
-                    return [self::ACTION_CANCEL, self::ACTION_START];
-                }
-                return [self::ACTION_RESPOND];
-            case self::STATUS_CANCELED:
-                return [];
-            case self::STATUS_WORKING:
-                if ($currentUserId === $this->customerId ){
-                    return [self::ACTION_COMPLETE];
-                }
-                if ($currentUserId === $this->executorId){
-                    return [self::ACTION_FAIL];
-                }
-                return [];
-            return [];
+    public function getActions($currentId){
+        $actions = [];
+        if(ActionStart::checkVerification($this, $currentId)){
+            $actions[] = new ActionStart;
         }
+        if(ActionCancel::checkVerification($this, $currentId)){
+            $actions[] = new ActionCancel;
+        }
+        if(ActionRespond::checkVerification($this, $currentId)){
+            $actions[] = new ActionRespond;
+        }
+        if(ActionFail::checkVerification($this, $currentId)){
+            $actions[] = new ActionFail;
+        }
+        if(ActionComplete::checkVerification($this, $currentId)){
+            $actions[] = new ActionComplete;
+        }
+        return $actions;
     }
 
     public function getStatus($action){
