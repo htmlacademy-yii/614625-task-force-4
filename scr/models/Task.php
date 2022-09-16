@@ -6,6 +6,8 @@ use TaskForce\actions\ActionCancel;
 use TaskForce\actions\ActionRespond;
 use TaskForce\actions\ActionFail;
 use TaskForce\actions\ActionComplete;
+use TaskForce\exceptions\StatusException;
+use TaskForce\exceptions\PrivilegeException;
 
 class Task
 {
@@ -26,9 +28,26 @@ class Task
     public $executorId;
 
     public function __construct($status, $customerId, $executorId = null){
-        $this->status = $status;
-        $this->customerId = $customerId;
-        $this->executorId = $executorId;
+        try {
+            if(!array_search($status,[self::STATUS_NEW, self::STATUS_CANCELED, self::STATUS_WORKING, self::STATUS_COMPLETED, self::STATUS_FAILED])){
+                throw new StatusException("Статус задан неверно");
+            }
+            if($customerId === null || !is_int($customerId)){
+                throw new PrivilegeException("Заказчик задан неверно");
+            }
+            if(!is_int($executorId)){
+                throw new PrivilegeException("Исполнитель задан неверно");
+            }
+            $this->status = $status;
+            $this->customerId = $customerId;
+            $this->executorId = $executorId;
+        }
+        catch (StatusException $e){
+            $e->errorMessage($e);
+        }
+        catch (PrivilegeException $e){
+            $e->errorMessage($e);
+        }
     }
 
     public function getActions($currentId){
