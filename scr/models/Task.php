@@ -8,6 +8,7 @@ use TaskForce\actions\ActionFail;
 use TaskForce\actions\ActionComplete;
 use TaskForce\exceptions\StatusException;
 use TaskForce\exceptions\PrivilegeException;
+use TaskForce\exceptions\ActionException;
 
 class Task
 {
@@ -27,7 +28,7 @@ class Task
     public $customerId;
     public $executorId;
 
-    public function __construct($status, $customerId, $executorId = null){
+    public function __construct(string $status, int $customerId, ?int $executorId = null){
         try {
             if(!array_search($status,[self::STATUS_NEW, self::STATUS_CANCELED, self::STATUS_WORKING, self::STATUS_COMPLETED, self::STATUS_FAILED])){
                 throw new StatusException("Статус задан неверно");
@@ -37,6 +38,9 @@ class Task
             }
             if(!is_int($executorId)){
                 throw new PrivilegeException("Исполнитель задан неверно");
+            }
+            if($customerId === $executorId){
+                throw new PrivilegeException("Заказчик и исполнитель не могут быть одинаковыми");
             }
             $this->status = $status;
             $this->customerId = $customerId;
@@ -50,7 +54,7 @@ class Task
         }
     }
 
-    public function getActions($currentId){
+    public function getActions(int $currentId){
         $actions = [];
         if(ActionStart::checkVerification($this, $currentId)){
             $actions[] = new ActionStart;
@@ -70,7 +74,15 @@ class Task
         return $actions;
     }
 
-    public function getStatus($action){
+    public function getStatus(string $action){
+        try{
+            if(!array_search($action,[self::ACTION_START,self::ACTION_CANCEL,self::ACTION_RESPOND,self::ACTION_FAIL,self:: ACTION_COMPLETE])){
+                throw new ActionException("Для данного действия нет статуса");
+            }
+        }
+        catch(ActionException $e){
+            $e->errorMessage($e);
+        }
         if ($action === self::ACTION_START){
             return self::STATUS_NEW;
         }
