@@ -29,29 +29,21 @@ class Task
     public $executorId;
 
     public function __construct(string $status, int $customerId, ?int $executorId = null){
-        try {
-            if(!array_search($status,[self::STATUS_NEW, self::STATUS_CANCELED, self::STATUS_WORKING, self::STATUS_COMPLETED, self::STATUS_FAILED])){
-                throw new StatusException("Статус задан неверно");
-            }
-            if($customerId === null || !is_int($customerId)){
-                throw new PrivilegeException("Заказчик задан неверно");
-            }
-            if(!is_int($executorId)){
-                throw new PrivilegeException("Исполнитель задан неверно");
-            }
-            if($customerId === $executorId){
-                throw new PrivilegeException("Заказчик и исполнитель не могут быть одинаковыми");
-            }
-            $this->status = $status;
-            $this->customerId = $customerId;
-            $this->executorId = $executorId;
+        if(!array_search($status,[self::STATUS_NEW, self::STATUS_CANCELED, self::STATUS_WORKING, self::STATUS_COMPLETED, self::STATUS_FAILED])){
+            throw new StatusException();
         }
-        catch (StatusException $e){
-            $e->errorMessage($e);
+        if($customerId === null || !is_int($customerId)){
+            throw new PrivilegeException();
         }
-        catch (PrivilegeException $e){
-            $e->errorMessage($e);
+        if(!is_int($executorId)){
+            throw new PrivilegeException();
         }
+        if($customerId === $executorId){
+            throw new PrivilegeException();
+        }
+        $this->status = $status;
+        $this->customerId = $customerId;
+        $this->executorId = $executorId;
     }
 
     public function getActions(int $currentId){
@@ -75,14 +67,11 @@ class Task
     }
 
     public function getStatus(string $action){
-        try{
-            if(!array_search($action,[self::ACTION_START,self::ACTION_CANCEL,self::ACTION_RESPOND,self::ACTION_FAIL,self:: ACTION_COMPLETE])){
-                throw new ActionException("Для данного действия нет статуса");
-            }
+
+        if(!array_search($action,[self::ACTION_START,self::ACTION_CANCEL,self::ACTION_RESPOND,self::ACTION_FAIL,self:: ACTION_COMPLETE])){
+            throw new ActionException();
         }
-        catch(ActionException $e){
-            $e->errorMessage($e);
-        }
+        
         if ($action === self::ACTION_START){
             return self::STATUS_NEW;
         }

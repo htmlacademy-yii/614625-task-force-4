@@ -1,10 +1,8 @@
 <?php
 namespace TaskForce\exceptions;
 
-class ActionException extends TaskException{
-    protected $message;
-    public function errorMessage($message){
-        echo $message;
-        exit;
-    }
+use Exception;
+
+class ActionException extends Exception{
+    protected $message = 'Для данного действия нет статуса';
 }

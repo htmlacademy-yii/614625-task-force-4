@@ -1,10 +1,8 @@
 <?php
 namespace TaskForce\exceptions;
 
-class StatusException extends TaskException{
-    protected $message;
-    public function errorMessage($message){
-        echo $message;
-        exit;
-    }
+use Exception;
+
+class StatusException extends Exception{
+    protected $message = 'Статус задан неверно';
 }
