@@ -1,7 +1,7 @@
 <?php
 namespace TaskForce\importers;
-use SplFileObject;
-
+use TaskForce\exceptions\FileExeption;
+use Exception;
 class DataImporter{
 
     public function getRowTableCategories(){
@@ -46,31 +46,47 @@ class DataImporter{
     }
 
     public function getFileObject($filename){
-        if(!file_exists(dirname(dirname(__DIR__)) . $filename)){
-            //throw new fileExeption();
-        }
-
+        // if(!file_exists(dirname(dirname(__DIR__)) . $filename)){
+        //     throw new FileExeption();
+        // }
+        try{
         $fileCsv = new \SplFileObject(dirname(dirname(__DIR__)) . $filename);
         $fileInfo = new \SplFileInfo(dirname(dirname(__DIR__)) . $filename);
-
+        } catch(Exception $e){
+            echo 'Выброшено исключение: ',  $e->getMessage(), "\n";
+        }
         if($fileInfo->getFilename()==='categories.csv'){
             $tableName = $this->getTableNameCategories();
             $tableRow = $this->getRowTableCategories();
+            $filename = 'categories';
         }
         if($fileInfo->getFilename()==='cities.csv'){
             $tableName = $this->getTableNameCities();
             $tableRow = $this->getRowTableCities();
+            $filename = 'cities';
         }
+        $filename .= '.sql';
 
-        $insertTxt = 'INSERT INTO ' . $tableName . ' (' . $this->arrayToSring($tableRow) . ')' . ' VALUES';
-        //var_dump($insertTxt);
-        //exit;
-        foreach ($this->getLineFile($fileCsv) as $line) {
-            //print_r('<pre>');
-            //var_dump($line);
-            //print_r('</pre>');
-            //array(2) {[0]=>string(33) "Курьерские услуги"[1]=>string(7) "courier"}
+        $insertTxt = 'INSERT INTO ' . $tableName . ' (' . $this->arrayToSring($tableRow) . ')' . ' VALUES ';
+        $date = date('Y-m-d');
+        $this->getFileHeadColumn($fileCsv);
+
+        foreach ($this->getLineFile($fileCsv) as $key => $line) {
+            if($key!==0){
+                $insertTxt .= ',';
+            }
+            $insertTxt .= "('{$date}',";
+            foreach ($line as $keyLine => $lineData) {
+                $insertTxt .= "'{$lineData}'";
+                if(count($line)===$keyLine+1){
+                    continue;
+                }
+                $insertTxt .= ',';
+            }
+            $insertTxt .= ')';
+
         }
-
+        $insertTxt .= ';';
+        file_put_contents($filename, $insertTxt);
     }
 }
