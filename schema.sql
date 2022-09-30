@@ -39,7 +39,8 @@ CREATE TABLE tasks (
 CREATE TABLE categories(
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
-    name varchar(64) NOT NULL
+    name varchar(64) NOT NULL,
+    symbol_code varchar(122) NOT NULL
 );
 
 CREATE TABLE user_categories(
