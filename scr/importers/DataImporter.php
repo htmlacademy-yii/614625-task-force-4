@@ -1,24 +1,11 @@
 <?php
 namespace TaskForce\importers;
 use TaskForce\exceptions\FileExeption;
-use Exception;
 class DataImporter{
-
-    public function getRowTableCategories(){
-        return ['creation_time', 'name', 'symbol_code'];
-    }
-
-    public function getTableNameCategories(){
-        return 'categories';
-    }
-
-    public function getRowTableCities(){
-        return ['creation_time', 'name', 'longitude', 'latitude'];
-    }
-
-    public function getTableNameCities(){
-        return 'cities';
-    }
+    const TABLENAMECITIES = 'cities';
+    const TABLENAMECATEGORIES = 'categories';
+    const TABLEROWCATEGORIES = ['creation_time', 'name', 'symbol_code'];
+    const TABLEROWCITIES = ['creation_time', 'name', 'longitude', 'latitude'];
 
     public function getFileHeadColumn($fileCsv){
         $fileCsv->rewind();
@@ -45,24 +32,20 @@ class DataImporter{
         return $stringData;
     }
 
-    public function getFileObject($filename){
-        // if(!file_exists(dirname(dirname(__DIR__)) . $filename)){
-        //     throw new FileExeption();
-        // }
-        try{
-        $fileCsv = new \SplFileObject(dirname(dirname(__DIR__)) . $filename);
-        $fileInfo = new \SplFileInfo(dirname(dirname(__DIR__)) . $filename);
-        } catch(Exception $e){
-            echo 'Выброшено исключение: ',  $e->getMessage(), "\n";
+    public function convertCsvtoSql($filename){
+        if(!file_exists($filename)){
+            throw new FileExeption();
         }
+        $fileCsv = new \SplFileObject($filename);
+        $fileInfo = new \SplFileInfo($filename);
         if($fileInfo->getFilename()==='categories.csv'){
-            $tableName = $this->getTableNameCategories();
-            $tableRow = $this->getRowTableCategories();
+            $tableName = $this::TABLENAMECATEGORIES;
+            $tableRow = $this::TABLEROWCATEGORIES;
             $filename = 'categories';
         }
         if($fileInfo->getFilename()==='cities.csv'){
-            $tableName = $this->getTableNameCities();
-            $tableRow = $this->getRowTableCities();
+            $tableName = $this::TABLENAMECITIES;
+            $tableRow = $this::TABLEROWCITIES;
             $filename = 'cities';
         }
         $filename .= '.sql';
