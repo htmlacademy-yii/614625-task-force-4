@@ -27,8 +27,8 @@ CREATE TABLE tasks (
     creation_time datetime NOT NULL,
     title varchar(122) NOT NULL,
     description varchar(255) NOT NULL,
-    category_id int NOT NULL REFERENCES category(id),
-    location_id int NOT NULL REFERENCES location(id),
+    category_id int NOT NULL REFERENCES categories(id),
+    location_id int NOT NULL REFERENCES locations(id),
     customer_id int NOT NULL REFERENCES users(id),
     executor_id int REFERENCES users(id),
     status varchar(64) NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE locations(
 CREATE TABLE reviews(
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
-    task_id int NOT NULL REFERENCES task(id),
+    task_id int NOT NULL REFERENCES tasks(id),
     stars tinyint(5) NOT NULL,
     user_id int NOT NULL REFERENCES users(id),
     text varchar(255)
@@ -69,7 +69,7 @@ CREATE TABLE reviews(
 CREATE TABLE responses(
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
-    task_id int NOT NULL REFERENCES task(id),
+    task_id int NOT NULL REFERENCES tasks(id),
     user_id int NOT NULL REFERENCES users(id),
     text varchar(255) NOT NULL,
     price int NOT NULL,
@@ -84,6 +84,6 @@ CREATE TABLE files(
 
 CREATE TABLE task_files(
     id int PRIMARY KEY AUTO_INCREMENT,
-    task_id int NOT NULL REFERENCES task(id),
+    task_id int NOT NULL REFERENCES tasks(id),
     file_id int NOT NULL REFERENCES files(id)
 );
