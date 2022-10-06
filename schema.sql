@@ -1,5 +1,5 @@
-CREATE DATABASE taskforse CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE taskforse;
+CREATE DATABASE taskforce CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE taskforce;
 
 CREATE TABLE users (
     id int PRIMARY KEY AUTO_INCREMENT,
