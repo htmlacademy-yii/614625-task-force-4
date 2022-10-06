@@ -1,6 +1,14 @@
 CREATE DATABASE taskforce CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE taskforce;
 
+CREATE table cities(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    creation_time datetime NOT NULL,
+    name varchar(122) NOT NULL UNIQUE,
+    longitude decimal(11,8) NOT NULL,
+    latitude decimal(11,8) NOT NULL
+);
+
 CREATE TABLE users (
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
@@ -12,28 +20,6 @@ CREATE TABLE users (
     telegram varchar(64) NOT NULL,
     phone varchar(64) NOT NULL,
     avatar varchar(64) NOT NULL
-);
-
-CREATE table cities(
-    id int PRIMARY KEY AUTO_INCREMENT,
-    creation_time datetime NOT NULL,
-    name varchar(122) NOT NULL UNIQUE,
-    longitude decimal(11,8) NOT NULL,
-    latitude decimal(11,8) NOT NULL
-);
-
-CREATE TABLE tasks (
-    id int PRIMARY KEY AUTO_INCREMENT,
-    creation_time datetime NOT NULL,
-    title varchar(122) NOT NULL,
-    description varchar(255) NOT NULL,
-    category_id int NOT NULL REFERENCES categories(id),
-    location_id int NOT NULL REFERENCES locations(id),
-    customer_id int NOT NULL REFERENCES users(id),
-    executor_id int REFERENCES users(id),
-    status varchar(64) NOT NULL,
-    budget int NOT NULL,
-    date_completion datetime NOT NULL
 );
 
 CREATE TABLE categories(
@@ -55,6 +41,20 @@ CREATE TABLE locations(
     name varchar(122) NOT NULL UNIQUE,
     longitude decimal(11,8) NOT NULL,
     latitude decimal(11,8) NOT NULL
+);
+
+CREATE TABLE tasks (
+    id int PRIMARY KEY AUTO_INCREMENT,
+    creation_time datetime NOT NULL,
+    title varchar(122) NOT NULL,
+    description varchar(255) NOT NULL,
+    category_id int NOT NULL REFERENCES categories(id),
+    location_id int NOT NULL REFERENCES locations(id),
+    customer_id int NOT NULL REFERENCES users(id),
+    executor_id int REFERENCES users(id),
+    status varchar(64) NOT NULL,
+    budget int NOT NULL,
+    date_completion datetime NOT NULL
 );
 
 CREATE TABLE reviews(
