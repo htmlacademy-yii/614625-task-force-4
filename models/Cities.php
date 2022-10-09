@@ -13,6 +13,7 @@ use Yii;
  * @property float $longitude
  * @property float $latitude
  *
+ * @property Locations[] $locations
  * @property Users[] $users
  */
 class Cities extends \yii\db\ActiveRecord
@@ -51,6 +52,16 @@ class Cities extends \yii\db\ActiveRecord
             'longitude' => 'Longitude',
             'latitude' => 'Latitude',
         ];
+    }
+
+    /**
+     * Gets query for [[Locations]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLocations()
+    {
+        return $this->hasMany(Locations::class, ['cities_id' => 'id']);
     }
 
     /**

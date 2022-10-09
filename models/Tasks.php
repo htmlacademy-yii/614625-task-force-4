@@ -37,7 +37,7 @@ class Tasks extends \yii\db\ActiveRecord
     const STATUS_WORKING = 'working';
     const STATUS_COMPLETED = 'completed';
     const STATUS_FAILED = 'failed';
-
+    
     public static function tableName()
     {
         return 'tasks';
