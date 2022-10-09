@@ -14,7 +14,7 @@ class TasksController extends Controller
         $activeQuery->where(['status'=> Tasks::STATUS_NEW]);
         $activeQuery->orderBy(['creation_time' => SORT_ASC]);
         $tasks = $activeQuery->all();
-        return $this->render('task', ['task' => $tasks]);
+        return $this->render('task', ['tasks' => $tasks]);
     }
 
 }
