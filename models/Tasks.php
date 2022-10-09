@@ -32,6 +32,12 @@ class Tasks extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    const STATUS_NEW = 'new';
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_WORKING = 'working';
+    const STATUS_COMPLETED = 'completed';
+    const STATUS_FAILED = 'failed';
+
     public static function tableName()
     {
         return 'tasks';
