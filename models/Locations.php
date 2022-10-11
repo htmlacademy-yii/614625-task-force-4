@@ -12,7 +12,9 @@ use Yii;
  * @property string $name
  * @property float $longitude
  * @property float $latitude
+ * @property int $cities_id
  *
+ * @property Cities $cities
  * @property Tasks[] $tasks
  */
 class Locations extends \yii\db\ActiveRecord
@@ -31,11 +33,13 @@ class Locations extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['creation_time', 'name', 'longitude', 'latitude'], 'required'],
+            [['creation_time', 'name', 'longitude', 'latitude', 'cities_id'], 'required'],
             [['creation_time'], 'safe'],
             [['longitude', 'latitude'], 'number'],
+            [['cities_id'], 'integer'],
             [['name'], 'string', 'max' => 122],
             [['name'], 'unique'],
+            [['cities_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cities::class, 'targetAttribute' => ['cities_id' => 'id']],
         ];
     }
 
@@ -50,7 +54,18 @@ class Locations extends \yii\db\ActiveRecord
             'name' => 'Name',
             'longitude' => 'Longitude',
             'latitude' => 'Latitude',
+            'cities_id' => 'Cities ID',
         ];
+    }
+
+    /**
+     * Gets query for [[Cities]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCities()
+    {
+        return $this->hasOne(Cities::class, ['id' => 'cities_id']);
     }
 
     /**

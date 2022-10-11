@@ -45,7 +45,9 @@ CREATE TABLE locations(
     creation_time datetime NOT NULL,
     name varchar(122) NOT NULL UNIQUE,
     longitude decimal(11,8) NOT NULL,
-    latitude decimal(11,8) NOT NULL
+    latitude decimal(11,8) NOT NULL,
+    cities_id int NOT NULL,
+    FOREIGN KEY (cities_id) REFERENCES cities(id)
 );
 
 CREATE TABLE tasks (
