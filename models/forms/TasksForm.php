@@ -17,7 +17,18 @@ class TasksForm extends Model
     const DAY = 24;
     const WEEK = 168;
     //получить просто таски
+    public function getTasks(){
+        $activeQuery = Task::find();
+        $activeQuery->joinWith('city');
+        $activeQuery->joinWith('category');
+        $activeQuery->where(['status' => Task::STATUS_NEW]);
+        return $activeQuery;
+    }
     //получить отфильтрованные таски
+    public function getFilterTasks(){
+        $activeQuery = $this->getTasks();
+        
+    }
 }
 
 
