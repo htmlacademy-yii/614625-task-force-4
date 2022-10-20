@@ -1,3 +1,7 @@
+<?php
+use yii\widgets\ActiveForm;
+use app\models\Categories;
+?>
 <main class="main-content container">
     <div class="left-column">
         <h3 class="head-main head-task">Новые задания</h3>
@@ -39,7 +43,13 @@
     <div class="right-column">
        <div class="right-card black">
            <div class="search-form">
-                <form>
+                <?php
+                    ActiveForm::begin();
+                ?>
+                <?php
+                    ActiveForm::end();
+                ?>
+                <!-- <form method="post">
                     <h4 class="head-card">Категории</h4>
                     <div class="form-group">
                         <div class="checkbox-wrapper">
@@ -70,7 +80,7 @@
                         </select>
                     </div>
                     <input type="submit" class="button button--blue" value="Искать">
-                </form>
+                </form> -->
            </div>
        </div>
     </div>
