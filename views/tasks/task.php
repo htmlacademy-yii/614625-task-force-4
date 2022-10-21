@@ -43,12 +43,9 @@ use app\models\Categories;
     <div class="right-column">
        <div class="right-card black">
            <div class="search-form">
-                <?php
-                    ActiveForm::begin();
-                ?>
-                <?php
-                    ActiveForm::end();
-                ?>
+                <?php $taskForm = ActiveForm::begin([ 'id' => 'taskform']);?>
+                    <h4 class="head-card">Категории</h4>
+                <?php ActiveForm::end(); ?>
                 <!-- <form method="post">
                     <h4 class="head-card">Категории</h4>
                     <div class="form-group">

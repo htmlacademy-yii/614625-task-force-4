@@ -29,6 +29,26 @@ class TasksForm extends Model
         $activeQuery = $this->getTasks();
         
     }
+
+    public function attributeLabels()
+    {
+        return [
+            'category' => 'Категории',
+            'noExecutor' =>  'Без исполнителя',
+            'period' => 'Период',
+        ];
+    }
+
+    public function rules()
+    {
+        return [
+            [
+                ['category', 'each', 'rule' => ['exist', 'targetClass' => Categories::className(), 'targetAttribute' => ['category' => 'id']]],
+                ['noExecutor', 'boolean'],
+                ['period', 'in', 'range' => [self::ONE_HOUR, self::DAY, self::WEEK] ]
+            ]
+        ];
+    }
 }
 
 
