@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "categories".
@@ -17,6 +18,16 @@ use Yii;
  */
 class Categories extends \yii\db\ActiveRecord
 {
+    public static function getCategoriesList()
+    {
+        $data = static::find()
+            ->select(['id', 'name'])
+            ->orderBy('id')
+            ->asArray()
+            ->all();
+        return ArrayHelper::map($data, 'id', 'name');
+    }
+
     /**
      * {@inheritdoc}
      */
