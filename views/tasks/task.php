@@ -5,21 +5,23 @@ use app\models\Categories;
 <main class="main-content container">
     <div class="left-column">
         <h3 class="head-main head-task">Новые задания</h3>
-        <?php foreach ($tasks as $task):?>
-        <div class="task-card">
-            <div class="header-task">
-                <a  href="#" class="link link--block link--big"><?=$task->title;?></a>
-                <p class="price price--task"><?=$task->budget?> ₽</p>
+        <?php if($tasks):?>
+            <?php foreach ($tasks as $task):?>
+            <div class="task-card">
+                <div class="header-task">
+                    <a  href="#" class="link link--block link--big"><?=$task->title;?></a>
+                    <p class="price price--task"><?=$task->budget?> ₽</p>
+                </div>
+                <p class="info-text"><span class="current-time">4 часа </span>назад</p>
+                <p class="task-text"><?=$task->description?></p>
+                <div class="footer-task">
+                    <p class="info-text town-text"><?=$task->location->cities->name?>, <?=$task->location->name?></p>
+                    <p class="info-text category-text"><?=$task->category->name?></p>
+                    <a href="#" class="button button--black">Смотреть Задание</a>
+                </div>
             </div>
-            <p class="info-text"><span class="current-time">4 часа </span>назад</p>
-            <p class="task-text"><?=$task->description?></p>
-            <div class="footer-task">
-                <p class="info-text town-text"><?=$task->location->cities->name?>, <?=$task->location->name?></p>
-                <p class="info-text category-text"><?=$task->category->name?></p>
-                <a href="#" class="button button--black">Смотреть Задание</a>
-            </div>
-        </div>
-        <?php endforeach;?>
+            <?php endforeach;?>
+        <?php endif;?>
         <div class="pagination-wrapper">
             <ul class="pagination-list">
                 <li class="pagination-item mark">
@@ -45,6 +47,34 @@ use app\models\Categories;
            <div class="search-form">
                 <?php $taskForm = ActiveForm::begin([ 'id' => 'taskform']);?>
                     <h4 class="head-card">Категории</h4>
+                    <?php
+                        echo $taskForm->field($model, 'category', ['template' => '{input}{error}'])->checkboxList(
+                            Categories::getCategoriesList(),
+                            [
+                                'class' => 'checkbox-wrapper',
+                                'itemOptions' => [
+                                    'labelOptions' => [
+                                        'class' => 'control-label',
+                                    ],
+                                ],
+                            ]
+                        ); 
+                    ?>
+                    <h4 class="head-card">Дополнительно</h4>
+                    <?php
+                        echo $taskForm->field($model, 'noExecutor', [])->checkbox([
+                            'labelOptions' => [
+                                'class' => 'control-label',
+                            ]
+                        ]);
+                    ?>
+                    <h4 class="head-card">Период</h4>
+                    <?php
+                        echo $taskForm->field($model, 'period', ['template' => '{input}{error}'])->dropDownList(
+                            $model->periodAttributeLabels()
+                        );
+                    ?>
+                    <input type="submit" class="button button--blue" value="Искать">
                 <?php ActiveForm::end(); ?>
                 <!-- <form method="post">
                     <h4 class="head-card">Категории</h4>

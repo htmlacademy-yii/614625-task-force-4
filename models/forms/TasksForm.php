@@ -6,6 +6,7 @@ use app\models\Categories;
 use app\models\Tasks;
 use yii\base\Model;
 use yii\db\ActiveQuery;
+use yii\db\Expression;
 
 class TasksForm extends Model
 {
@@ -16,7 +17,7 @@ class TasksForm extends Model
     const ONE_HOUR = 1;
     const DAY = 24;
     const WEEK = 168;
-    //получить просто таски
+    
     public function getTasks(){
         $activeQuery = Tasks::find();
         $activeQuery->joinWith('location');
@@ -27,6 +28,12 @@ class TasksForm extends Model
     //получить отфильтрованные таски
     public function getFilterTasks(){
         $activeQuery = $this->getTasks();
+
+        //добавить фильтрацию по категории
+
+        //добавить фильтрацию по периоду
+
+        //добавить фитрацию по исполнителю
         
     }
 
@@ -39,14 +46,21 @@ class TasksForm extends Model
         ];
     }
 
-    public function rules()
+    public function choosePeriod($activeQuery){
+
+    }
+
+    public function periodAttributeLabels(): array
     {
+        return [self::ONE_HOUR => '1 час', self::DAY => '24 часа', self::WEEK => 'неделя'];
+    }
+
+    public function rules()
+    {   
         return [
-            [
-                ['category', 'each', 'rule' => ['exist', 'targetClass' => Categories::className(), 'targetAttribute' => ['category' => 'id']]],
-                ['noExecutor', 'boolean'],
-                ['period', 'in', 'range' => [self::ONE_HOUR, self::DAY, self::WEEK] ]
-            ]
+            ['category', 'each', 'rule' => ['exist', 'targetClass' => Categories::class, 'targetAttribute' => ['category' => 'id']]],
+            ['noExecutor', 'boolean'],
+            ['period', 'in', 'range' => [self::ONE_HOUR, self::DAY, self::WEEK] ]
         ];
     }
 }

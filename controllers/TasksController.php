@@ -14,10 +14,13 @@ class TasksController extends Controller
         $tasks = $taskForm->getTasks()->all();
 
         if (Yii::$app->request->getIsPost()){
-            //echo 'yes';
-            var_dump($_POST);
-            exit;
+            $taskForm->load(Yii::$app->request->post());
+            if (!$taskForm->validate()) {
+                $errors = $this->getErrors();
+            } else {
+                $tasks = $taskForm->getFilterTasks();
+            }
         }
-        return $this->render('task', ['tasks' => $tasks]);
+        return $this->render('task', ['tasks' => $tasks, 'model' => $taskForm]);
     }
 }
