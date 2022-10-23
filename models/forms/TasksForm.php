@@ -25,16 +25,21 @@ class TasksForm extends Model
         $activeQuery->where(['status' => Tasks::STATUS_NEW]);
         return $activeQuery;
     }
-    //получить отфильтрованные таски
+
     public function getFilterTasks(){
         $activeQuery = $this->getTasks();
 
-        //добавить фильтрацию по категории
+        if ($this->noExecutor) {
+            $activeQuery->andWhere(['executor_id' => null]);
+        }
+        if (isset($this->category)) {
+            $activeQuery->andFilterWhere(['category_id' => $this->category]);
+        }
+        if ($this->period) {
+            $this->choosePeriod($activeQuery);
+        }
 
-        //добавить фильтрацию по периоду
-
-        //добавить фитрацию по исполнителю
-        
+        return $activeQuery->all(); 
     }
 
     public function attributeLabels()
@@ -46,8 +51,15 @@ class TasksForm extends Model
         ];
     }
 
-    public function choosePeriod($activeQuery){
-
+    private function choosePeriod($activeQuery){
+        switch ($this->period) {
+            case self::ONE_HOUR:
+                return $activeQuery->andFilterWhere(['>', 'tasks.creation_time', new Expression('CURRENT_TIMESTAMP() - INTERVAL 1 HOUR')]);
+            case self::DAY:
+                return $activeQuery->andFilterWhere(['>', 'tasks.creation_time', new Expression('CURRENT_TIMESTAMP() - INTERVAL 24 HOUR')]);
+            case self::WEEK:
+                return $activeQuery->andFilterWhere(['>', 'tasks.creation_time', new Expression('CURRENT_TIMESTAMP() - INTERVAL 168 HOUR')]);
+        }
     }
 
     public function periodAttributeLabels(): array
