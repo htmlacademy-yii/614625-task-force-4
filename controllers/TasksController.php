@@ -6,6 +6,7 @@ use app\models\forms\TasksForm;
 use Yii;
 use app\models\Tasks;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 class TasksController extends Controller
 {
@@ -22,5 +23,16 @@ class TasksController extends Controller
             }
         }
         return $this->render('task', ['tasks' => $tasks, 'model' => $taskForm]);
+    }
+
+    public function actionView($id)
+    {
+        $task = Tasks::findOne($id);
+
+        if (!$task) {
+            throw new NotFoundHttpException("По указанному id задача не найдена");
+        }
+
+        return $this->render('view', ['task' => $task]);
     }
 }
