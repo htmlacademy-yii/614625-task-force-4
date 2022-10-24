@@ -1,25 +1,23 @@
 <main class="main-content container">
+    <?php print_r('<pre>');
+        var_dump($task);
+        print_r('</pre>');
+    ?>
     <div class="left-column">
         <div class="head-wrapper">
-            <h3 class="head-main">Убрать квартиру после вписки</h3>
-            <p class="price price--big">2500 ₽</p>
+            <h3 class="head-main"><?=$task->title?></h3>
+            <p class="price price--big"><?=$task->budget;?> ₽</p>
         </div>
         <p class="task-description">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas varius tortor nibh,
-            sit amet tempor nibh finibus et. Aenean eu enim justo. Vestibulum aliquam hendrerit
-            molestie. Mauris malesuada nisi sit amet augue accumsan tincidunt. Maecenas
-            tincidunt, velit ac porttitor pulvinar, tortor eros facilisis libero, vitae commodo nunc
-            quam et ligula. Ut nec ipsum sapien. Interdum et malesuada fames ac ante ipsum
-            primis in faucibus. Integer id nisi nec nulla luctus lacinia non eu turpis. Etiam in ex
-            imperdiet justo tincidunt egestas. Ut porttitor urna ac augue cursus tincidunt sit amet
-            sed orci.</p>
+        <?=$task->description;?>
+        </p>
         <a href="#" class="button button--blue action-btn" data-action="act_response">Откликнуться на задание</a>
         <a href="#" class="button button--orange action-btn" data-action="refusal">Отказаться от задания</a>
         <a href="#" class="button button--pink action-btn" data-action="completion">Завершить задание</a>
         <div class="task-map">
             <img class="map" src="img/map.png"  width="725" height="346" alt="Новый арбат, 23, к. 1">
-            <p class="map-address town">Москва</p>
-            <p class="map-address">Новый арбат, 23, к. 1</p>
+            <p class="map-address town"><?=$task->location->cities->name?></p>
+            <p class="map-address"><?=$task->location->name?></p>
         </div>
         <h4 class="head-regular">Отклики на задание</h4>
         <div class="response-card">
