@@ -20,7 +20,7 @@
             <div class="response-card">
                 <img class="customer-photo" src="<?=$task->executor->avatar?>" width="146" height="156" alt="Фото заказчиков">
                 <div class="feedback-wrapper">
-                    <a href="#" class="link link--block link--big"><?=$task->executor->name?></a>
+                    <a href="/index.php?r=user/view&id=<?=$task->executor->id?>" class="link link--block link--big"><?=$task->executor->name?></a>
                     <div class="response-wrapper">
                         <div class="stars-rating small"><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span>&nbsp;</span></div>
                         <p class="reviews">2 отзыва</p>
