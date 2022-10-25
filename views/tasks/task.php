@@ -17,7 +17,7 @@ use app\models\Categories;
                 <div class="footer-task">
                     <p class="info-text town-text"><?=$task->location->cities->name?>, <?=$task->location->name?></p>
                     <p class="info-text category-text"><?=$task->category->name?></p>
-                    <a href="#" class="button button--black">Смотреть Задание</a>
+                    <a href="/index.php?r=tasks/view&id=<?=$task->id?>" class="button button--black">Смотреть Задание</a>
                 </div>
             </div>
             <?php endforeach;?>
