@@ -1,8 +1,4 @@
 <main class="main-content container">
-    <?php print_r('<pre>');
-        var_dump($task);
-        print_r('</pre>');
-    ?>
     <div class="left-column">
         <div class="head-wrapper">
             <h3 class="head-main"><?=$task->title?></h3>
@@ -20,63 +16,42 @@
             <p class="map-address"><?=$task->location->name?></p>
         </div>
         <h4 class="head-regular">Отклики на задание</h4>
-        <div class="response-card">
-            <img class="customer-photo" src="img/man-glasses.png" width="146" height="156" alt="Фото заказчиков">
-            <div class="feedback-wrapper">
-                <a href="#" class="link link--block link--big">Астахов Павел</a>
-                <div class="response-wrapper">
-                    <div class="stars-rating small"><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span>&nbsp;</span></div>
-                    <p class="reviews">2 отзыва</p>
+        <?php foreach ($task->responses as $response): ?>
+            <div class="response-card">
+                <img class="customer-photo" src="<?=$task->executor->avatar?>" width="146" height="156" alt="Фото заказчиков">
+                <div class="feedback-wrapper">
+                    <a href="#" class="link link--block link--big"><?=$task->executor->name?></a>
+                    <div class="response-wrapper">
+                        <div class="stars-rating small"><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span>&nbsp;</span></div>
+                        <p class="reviews">2 отзыва</p>
+                    </div>
+                    <p class="response-message">
+                        <?=$response->text?>
+                    </p>
                 </div>
-                <p class="response-message">
-                    Могу сделать всё в лучшем виде. У меня есть необходимый опыт и инструменты.
-                </p>
-
-            </div>
-            <div class="feedback-wrapper">
-                <p class="info-text"><span class="current-time">25 минут </span>назад</p>
-                <p class="price price--small">3700 ₽</p>
-            </div>
-            <div class="button-popup">
-                <a href="#" class="button button--blue button--small">Принять</a>
-                <a href="#" class="button button--orange button--small">Отказать</a>
-            </div>
-        </div>
-        <div class="response-card">
-            <img class="customer-photo" src="img/man-sweater.png" width="146" height="156" alt="Фото заказчиков">
-            <div class="feedback-wrapper">
-                <a href="#" class="link link--block link--big">Дмитриев Андрей</a>
-                <div class="response-wrapper">
-                    <div class="stars-rating small"><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span>&nbsp;</span></div>
-                    <p class="reviews">8 отзывов</p>
+                <div class="feedback-wrapper">
+                    <p class="info-text"><span class="current-time"><?=Yii::$app->formatter->asRelativeTime($response->creation_time)?></p>
+                    <p class="price price--small"><?=$response->price?> ₽</p>
                 </div>
-                <p class="response-message">
-                    Примусь за выполнение задания в течение часа, сделаю быстро и качественно.
-                </p>
-
+                <div class="button-popup">
+                    <a href="#" class="button button--blue button--small">Принять</a>
+                    <a href="#" class="button button--orange button--small">Отказать</a>
+                </div>
             </div>
-            <div class="feedback-wrapper">
-                <p class="info-text"><span class="current-time">2 часа </span>назад</p>
-                <p class="price price--small">1999 ₽</p>
-            </div>
-            <div class="button-popup">
-                <a href="#" class="button button--blue button--small">Принять</a>
-                <a href="#" class="button button--orange button--small">Отказать</a>
-            </div>
-        </div>
+        <?php endforeach;?>
     </div>
     <div class="right-column">
         <div class="right-card black info-card">
             <h4 class="head-card">Информация о задании</h4>
             <dl class="black-list">
                 <dt>Категория</dt>
-                <dd>Уборка</dd>
+                <dd><?=$task->category->name?></dd>
                 <dt>Дата публикации</dt>
-                <dd>25 минут назад</dd>
+                <dd><?=Yii::$app->formatter->asRelativeTime($task->creation_time)?></dd>
                 <dt>Срок выполнения</dt>
-                <dd>15 октября, 13:00</dd>
+                <dd><?=Yii::$app->formatter->asRelativeTime($task->date_completion)?></dd>
                 <dt>Статус</dt>
-                <dd>Открыт для новых заказов</dd>
+                <dd><?=$task->getStatusName()?></dd>
             </dl>
         </div>
         <div class="right-card white file-card">

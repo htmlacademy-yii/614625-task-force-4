@@ -9,7 +9,7 @@ use app\models\Categories;
             <?php foreach ($tasks as $task):?>
             <div class="task-card">
                 <div class="header-task">
-                    <a  href="#" class="link link--block link--big"><?=$task->title;?></a>
+                    <a  href="/index.php?r=tasks/view&id=<?=$task->id?>" class="link link--block link--big"><?=$task->title;?></a>
                     <p class="price price--task"><?=$task->budget?> ₽</p>
                 </div>
                 <p class="info-text"><span class="current-time">4 часа </span>назад</p>
