@@ -1,6 +1,7 @@
 <?php
 use yii\widgets\ActiveForm;
 use app\models\Categories;
+use yii\helpers\Url;
 ?>
 <main class="main-content container">
     <div class="left-column">
@@ -9,7 +10,7 @@ use app\models\Categories;
             <?php foreach ($tasks as $task):?>
             <div class="task-card">
                 <div class="header-task">
-                    <a  href="#" class="link link--block link--big"><?=$task->title;?></a>
+                    <a  href="<?php echo $url = Url::toRoute(['tasks/view', 'id' => $task->id])?>" class="link link--block link--big"><?=$task->title;?></a>
                     <p class="price price--task"><?=$task->budget?> ₽</p>
                 </div>
                 <p class="info-text"><span class="current-time">4 часа </span>назад</p>
@@ -17,7 +18,7 @@ use app\models\Categories;
                 <div class="footer-task">
                     <p class="info-text town-text"><?=$task->location->cities->name?>, <?=$task->location->name?></p>
                     <p class="info-text category-text"><?=$task->category->name?></p>
-                    <a href="#" class="button button--black">Смотреть Задание</a>
+                    <a href="<?php echo $url = Url::toRoute(['tasks/view', 'id' => $task->id])?>" class="button button--black">Смотреть Задание</a>
                 </div>
             </div>
             <?php endforeach;?>

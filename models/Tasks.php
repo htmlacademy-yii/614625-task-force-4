@@ -38,6 +38,19 @@ class Tasks extends \yii\db\ActiveRecord
     const STATUS_COMPLETED = 'completed';
     const STATUS_FAILED = 'failed';
     
+    public static $arrStatus = [
+        self::STATUS_NEW => "Новое",
+        self::STATUS_CANCELED => "Отменено",
+        self::STATUS_WORKING => "В работе",
+        self::STATUS_COMPLETED => "Завершено",
+        self::STATUS_FAILED => "Провалено"
+    ];
+
+    public function getStatusName()
+    {
+        return self::$arrStatus[$this->status];
+    }
+
     public static function tableName()
     {
         return 'tasks';
