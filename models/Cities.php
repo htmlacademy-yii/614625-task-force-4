@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use Yii\db\Query;
+use Yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "cities".
@@ -38,6 +40,12 @@ class Cities extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 122],
             [['name'], 'unique'],
         ];
+    }
+
+    public static function getCityList()
+    {
+        $cityList = Cities::find()->select('id, name')->asArray()->all();
+        return ArrayHelper::map($cityList, 'id', 'name');
     }
 
     /**
