@@ -42,19 +42,4 @@ class RegistrationForm extends Model
             'isExecutor' => 'я собираюсь откликаться на заказы'
         ];
     }
-
-    public function createUser()
-    {
-        $user = new Users;
-        $user->creation_time = date('Y-m-d G:i:s');
-        $user->name = $this->name;
-        $user->email = $this->email;
-        $user->city_id = $this->cityId;
-        $user->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
-        $user->is_customer = 1;
-        if($this->isExecutor){
-            $user->is_customer = 0;
-        }
-        return $user;
-    }
 }

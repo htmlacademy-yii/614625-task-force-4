@@ -6,6 +6,7 @@ use app\models\forms\RegistrationForm;
 use Yii;
 use yii\web\Controller;
 use yii\base\Exception; 
+use app\services\UserCreateService;
 
 class RegistrationController extends Controller
 {
@@ -15,7 +16,8 @@ class RegistrationController extends Controller
         if (Yii::$app->request->getIsPost()) {
             $registrationForm->load(Yii::$app->request->post());
             if ($registrationForm->validate()){
-                if (!$registrationForm->createUser()->save()) {
+                $service = new UserCreateService();
+                if (!$service->create($registrationForm)) {
                     throw new Exception('Не удалось сохранить данные');
                 }
                 Yii::$app->response->redirect(['tasks']);
