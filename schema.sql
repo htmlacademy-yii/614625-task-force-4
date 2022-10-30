@@ -19,9 +19,9 @@ CREATE TABLE users (
     city_id int NOT NULL,
     password varchar(64) NOT NULL,
     is_customer tinyint(1),
-    telegram varchar(64) NOT NULL,
-    phone varchar(64) NOT NULL,
-    avatar varchar(64) NOT NULL,
+    telegram varchar(64),
+    phone varchar(64),
+    avatar varchar(64),
     FOREIGN KEY (city_id) REFERENCES cities(id)
 );
 
