@@ -7,8 +7,8 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\forms\LoginForm;
 
 class SiteController extends Controller
 {
@@ -60,9 +60,22 @@ class SiteController extends Controller
      * @return string
      */
     public function actionIndex()
-    {
-        return $this->render('index');
+    {   
+        $loginForm = new LoginForm();
+        $this->layout = 'landing';
+       
+
+        if (Yii::$app->request->getIsPost()) {{
+            $loginForm->load(Yii::$app->request->post()); 
+
+            if ($loginForm->validate()){
+                $user = $loginForm->getUser();
+            }
+        }
     }
+        return $this->render('index', ['model' => $loginForm] );
+    }
+
 
     /**
      * Login action.
