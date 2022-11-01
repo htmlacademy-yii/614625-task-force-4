@@ -70,38 +70,13 @@ class SiteController extends Controller
             }
 
             if ($loginForm->validate()){
-                $user = $loginForm->getUser();
-                // var_dump($user);
-                // exit;
-                Yii::$app->user->login($user);
+                $identity = $loginForm->getUser();
+                Yii::$app->user->login($identity);
 
                 return $this->redirect('/tasks');
             }
         }
         return $this->render('index', ['model' => $loginForm] );
-    }
-
-
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
-    public function actionLogin()
-    {
-        // if (!Yii::$app->user->isGuest) {
-        //     return $this->goHome();
-        // }
-
-        // $model = new LoginForm();
-        // if ($model->load(Yii::$app->request->post()) && $model->login()) {
-        //     return $this->goBack();
-        // }
-
-        // $model->password = '';
-        // return $this->render('login', [
-        //     'model' => $model,
-        // ]);
     }
 
     /**
@@ -113,34 +88,5 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->goHome();
+        return $this->redirect('/');
     }
-
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
-}
