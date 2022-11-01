@@ -10,6 +10,10 @@ use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
 
+use app\assets\MainAsset;
+//use yii\bootstrap5\Html;
+use yii\helpers\Url;
+
 AppAsset::register($this);
 
 $this->registerCsrfMetaTags();
@@ -53,6 +57,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
             </ul>
         </div>
     </nav>
+    <?php if (!Yii::$app->user->isGuest):?>
     <div class="user-block">
         <a href="#">
             <img class="user-photo" src="../img/man-glasses.png" width="55" height="55" alt="Аватар">
@@ -75,6 +80,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
             </div>
         </div>
     </div>
+    <?php endif;?>
 </header>
 
 <?= $content ?>
