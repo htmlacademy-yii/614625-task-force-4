@@ -3,40 +3,42 @@
 namespace app\controllers;
 
 use Yii;
-use yii\filters\AccessControl;
+
 use yii\web\Controller;
+use yii\filters\AccessControl;
+
 use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\ContactForm;
 use app\models\forms\LoginForm;
+use yii\widgets\ActiveForm;
 
 class SiteController extends Controller
 {
+    public $layout = 'landing';
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
-    }
+    // public function behaviors()
+    // {
+    //     return [
+    //         'access' => [
+    //             'class' => AccessControl::class,
+    //             'only' => ['logout'],
+    //             'rules' => [
+    //                 [
+    //                     'actions' => ['logout'],
+    //                     'allow' => true,
+    //                     'roles' => ['@'],
+    //                 ],
+    //             ],
+    //         ],
+    //         'verbs' => [
+    //             'class' => VerbFilter::class,
+    //             'actions' => [
+    //                 'logout' => ['post'],
+    //             ],
+    //         ],
+    //     ];
+    // }
 
     /**
      * {@inheritdoc}
@@ -46,10 +48,6 @@ class SiteController extends Controller
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
     }
@@ -62,17 +60,24 @@ class SiteController extends Controller
     public function actionIndex()
     {   
         $loginForm = new LoginForm();
-        $this->layout = 'landing';
        
-
-        if (Yii::$app->request->getIsPost()) {{
+        if (Yii::$app->request->getIsPost()) {
             $loginForm->load(Yii::$app->request->post()); 
+
+            if (Yii::$app->request->isAjax && $loginForm->load(Yii::$app->request->post())) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($loginForm);
+            }
 
             if ($loginForm->validate()){
                 $user = $loginForm->getUser();
+                // var_dump($user);
+                // exit;
+                Yii::$app->user->login($user);
+
+                return $this->redirect('/tasks');
             }
         }
-    }
         return $this->render('index', ['model' => $loginForm] );
     }
 
@@ -84,19 +89,19 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
+        // if (!Yii::$app->user->isGuest) {
+        //     return $this->goHome();
+        // }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
+        // $model = new LoginForm();
+        // if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        //     return $this->goBack();
+        // }
 
-        $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+        // $model->password = '';
+        // return $this->render('login', [
+        //     'model' => $model,
+        // ]);
     }
 
     /**

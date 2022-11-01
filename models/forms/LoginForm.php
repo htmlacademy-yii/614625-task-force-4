@@ -4,19 +4,17 @@ namespace app\models\forms;
 use Yii;
 use yii\base\Model;
 use app\models\Users;
-use Yii\app\security;
 
 class LoginForm extends Model
 {
     public $email;
     public $password;
-    public $user;
+    private $user;
 
     public function rules()
     {
         return [
             [['email', 'password'], 'required'],
-            ['password', 'string', 'max' => 64],
             ['email', 'email'],
             [['password'], 'validatePassword'],
         ];

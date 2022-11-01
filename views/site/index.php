@@ -104,20 +104,16 @@ use app\models\forms\LoginForm;
 <?php $form = ActiveForm::begin(
     [
         'id' => 'login-form',
-        'enableClientValidation' => true,
         'enableAjaxValidation' => true,
         'method' => 'post',
         'fieldConfig' => [
-            'template' => "{label}{input}{error}",
-            'options' => ['tag' => 'p'],
-            'inputOptions' => ['class' => 'enter-form-email input input-middle'],
-            'labelOptions' => ['class' => 'form-modal-description'],
+             'inputOptions' => ['class' => 'enter-form-email input input-middle'],
+             'labelOptions' => ['class' => 'form-modal-description'],
         ],
     ]
-);
-    echo $form->field($model, 'email',['enableAjaxValidation' => true])->textInput();
-    echo $form->field($model, 'password',['enableAjaxValidation' => true])->passwordInput();
-    ?>
+);?>
+    <?= $form->field($model, 'email')->input('email'); ?>
+    <?= $form->field($model, 'password')->passwordInput(); ?>
 
     <?=Html::submitButton('Войти', ['class' => 'button'])?>
     <?php ActiveForm::end(); ?>

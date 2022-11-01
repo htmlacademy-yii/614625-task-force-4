@@ -25,10 +25,11 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
 <head>
     <meta charset="UTF-8">
     <title>TaskForce</title>
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/landing.css">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/landing.css">
 </head>
 <body class="landing">
+<?php $this->beginBody(); ?>
 <div class="table-layout">
     <header class=" page-header--index">
         <div class="main-container page-header__container page-header__container--index">
@@ -118,7 +119,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
     </footer>
 </div>
 <div class="overlay"></div>
-<script src="js/landing.js"></script>
+<script src="/js/landing.js"></script>
+<?php $this->endBody(); ?>
 </body>
 </html>
 <?php $this->endPage() ?>
