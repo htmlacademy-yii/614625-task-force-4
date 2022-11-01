@@ -11,7 +11,6 @@ use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
 
 use app\assets\MainAsset;
-//use yii\bootstrap5\Html;
 use yii\helpers\Url;
 
 AppAsset::register($this);
@@ -60,10 +59,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
     <?php if (!Yii::$app->user->isGuest):?>
     <div class="user-block">
         <a href="#">
-            <img class="user-photo" src="../img/man-glasses.png" width="55" height="55" alt="Аватар">
+            <img class="user-photo" src="<?= (Yii::$app->user->getIdentity()->avatar);?>" width="55" height="55" alt="Аватар">
         </a>
         <div class="user-menu">
-            <p class="user-name">Василий</p>
+            <p class="user-name"><?= (Yii::$app->user->getIdentity()->name); ?></p>
             <div class="popup-head">
                 <ul class="popup-menu">
                     <li class="menu-item">
@@ -73,9 +72,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
                         <a href="#" class="link">Связаться с нами</a>
                     </li>
                     <li class="menu-item">
-                        <a href="#" class="link">Выход из системы</a>
+                        <a href="<?= Url::toRoute('/site/logout') ;?>" class="link">Выход из системы</a>
                     </li>
-
                 </ul>
             </div>
         </div>
