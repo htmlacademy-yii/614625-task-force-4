@@ -6,7 +6,7 @@ use app\models\Users;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
-class UserController extends Controller
+class UserController extends AuthController
 {
     public function actionView($id)
     {

@@ -3,38 +3,36 @@
 namespace app\controllers;
 
 use Yii;
-use yii\filters\AccessControl;
+
 use yii\web\Controller;
+use yii\filters\AccessControl;
+
 use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
+use app\models\forms\LoginForm;
+use yii\widgets\ActiveForm;
 
 class SiteController extends Controller
 {
+    public $layout = 'landing';
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
+    public function behaviors(){
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout'],
+                'denyCallback' => function () {
+                    return $this->redirect('/tasks');
+                },
+                'only' => ['index'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
                         'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
+                        'actions' => ['index'],
+                        'roles' => ['?']
+                    ]
+                ]
+            ]
         ];
     }
 
@@ -47,10 +45,6 @@ class SiteController extends Controller
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
         ];
     }
 
@@ -60,30 +54,25 @@ class SiteController extends Controller
      * @return string
      */
     public function actionIndex()
-    {
-        return $this->render('index');
-    }
+    {   
+        $loginForm = new LoginForm();
+       
+        if (Yii::$app->request->getIsPost()) {
+            $loginForm->load(Yii::$app->request->post()); 
 
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            if (Yii::$app->request->isAjax && $loginForm->load(Yii::$app->request->post())) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($loginForm);
+            }
+
+            if ($loginForm->validate()){
+                $identity = $loginForm->getUser();
+                Yii::$app->user->login($identity);
+
+                return $this->redirect('/tasks');
+            }
         }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-
-        $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+        return $this->render('index', ['model' => $loginForm] );
     }
 
     /**
@@ -95,34 +84,6 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->goHome();
-    }
-
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
+        return $this->redirect('/');
     }
 }

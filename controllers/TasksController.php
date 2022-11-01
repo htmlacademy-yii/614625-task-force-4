@@ -8,7 +8,7 @@ use app\models\Tasks;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
-class TasksController extends Controller
+class TasksController extends AuthController
 {
     public function actionIndex() {
         $taskForm = new TasksForm();
