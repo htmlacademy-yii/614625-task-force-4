@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\forms\TasksForm;
 use Yii;
 use app\models\Tasks;
+use app\models\forms\TaskCreateForm;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -34,5 +35,17 @@ class TasksController extends AuthController
         }
 
         return $this->render('view', ['task' => $task]);
+    }
+
+    public function actionCreate()
+    {
+        $user = Yii::$app->user->getIdentity();
+        if ($user->is_customer === 0) {
+            return $this->redirect('/tasks');
+        }
+
+        $taskCreateForm = new TaskCreateForm();
+        
+        return $this->render('create', ['taskCreateForm' => $taskCreateForm]);
     }
 }
