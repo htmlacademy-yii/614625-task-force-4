@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property string $creation_time
+ * @property string $path
  * @property string $name
  *
  * @property TaskFiles[] $taskFiles
@@ -32,6 +33,7 @@ class Files extends \yii\db\ActiveRecord
             [['creation_time', 'name'], 'required'],
             [['creation_time'], 'safe'],
             [['name'], 'string', 'max' => 122],
+            [['path'], 'string', 'max' => 512],
         ];
     }
 
@@ -44,6 +46,7 @@ class Files extends \yii\db\ActiveRecord
             'id' => 'ID',
             'creation_time' => 'Creation Time',
             'name' => 'Name',
+            'path' => 'Path',
         ];
     }
 
