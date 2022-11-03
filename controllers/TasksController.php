@@ -7,7 +7,9 @@ use Yii;
 use app\models\Tasks;
 use app\models\forms\TaskCreateForm;
 use yii\web\Controller;
+use yii\web\UploadedFile;
 use yii\web\NotFoundHttpException;
+use app\services\TaskCreateService;
 
 class TasksController extends AuthController
 {
@@ -45,7 +47,34 @@ class TasksController extends AuthController
         }
 
         $taskCreateForm = new TaskCreateForm();
-        
+
+        if (Yii::$app->request->getIsPost()) {
+            
+            $newTask = new Tasks();
+            $taskCreateForm->load(Yii::$app->request->post());
+            $newTask->customer_id = Yii::$app->user->identity->id; 
+            $newTask->creation_time = date("Y-m-d H:i:s");
+            $newTask->title = $taskCreateForm->name;
+            $newTask->description = $taskCreateForm->description;
+            $newTask->category_id = $taskCreateForm->category;
+            $newTask->location_id = 1;
+            $newTask->customer_id = $user->id;
+            $newTask->status = 'new';
+            $newTask->budget = $taskCreateForm->budget;
+            $newTask->date_completion = $taskCreateForm->dateCompletion;
+
+            if($newTask->validate()) {
+                
+                $newTask->taskFiles = UploadedFile::getInstances($taskCreateForm, 'files');    
+                $newTask->save();
+
+                $taskCreateServices = new TaskCreateService();
+                $taskCreateServices->saveUploadFiles($newTask->taskFiles, $newTask->id);
+
+                return $this->redirect('/tasks/view?id=' . $newTask->id);
+            }
+        }
+
         return $this->render('create', ['taskCreateForm' => $taskCreateForm]);
     }
 }

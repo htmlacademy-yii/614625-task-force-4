@@ -37,7 +37,8 @@ class Tasks extends \yii\db\ActiveRecord
     const STATUS_WORKING = 'working';
     const STATUS_COMPLETED = 'completed';
     const STATUS_FAILED = 'failed';
-    
+    public $taskFiles;
+
     public static $arrStatus = [
         self::STATUS_NEW => "Новое",
         self::STATUS_CANCELED => "Отменено",

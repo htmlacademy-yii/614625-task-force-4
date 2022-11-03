@@ -94,7 +94,8 @@ CREATE TABLE responses(
 CREATE TABLE files(
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
-    name varchar(122) NOT NULL
+    name varchar(122) NOT NULL,
+    path varchar(512) NOT NULL
 );
 
 CREATE TABLE task_files(
