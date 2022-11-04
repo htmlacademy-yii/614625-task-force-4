@@ -56,4 +56,39 @@ class TasksController extends AuthController
 
         return $this->render('create', ['taskCreateForm' => $taskCreateForm]);
     }
+
+    //статус отклика меняет на принят 
+    public function actionSubmit()
+    {
+
+    }
+
+    //новый отклик на задание
+    public function actionAccept()
+    {
+
+    }
+
+    //меняет статус отклика на отклонен по идентификатору
+    public function actionCancelr()
+    {
+
+    }
+
+    //меняет статус задания на отменноно и отклоняет все отклики на него
+    public function actionCancelt()
+    {
+
+    }
+
+    //меняет статус задания на выполнено
+    public function actionEnd(){
+
+    }
+
+    //меняет статус задания на провалено и отлоняет все отклики на него
+    public function actionFail(){
+        echo 'fail';
+        exit;
+    }
 }

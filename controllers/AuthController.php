@@ -16,9 +16,20 @@ class AuthController extends Controller
                     return $this->redirect('/');
                 },
                 'rules' => [
+                    // [
+                    //     'allow' => true,
+                    //     'roles' => ['@']
+                    // ]
                     [
+                        'actions' => ['index', 'view', 'accept', 'fail'],
                         'allow' => true,
                         'roles' => ['@']
+                    ],
+                    [
+                        'actions' => ['create', 'owner', 'submit', 'end', 'cancelt', 'cancelr'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        //'matchCallback' => fn () => !Yii::$app->user->identity->is_executor,
                     ]
                 ]
             ]
