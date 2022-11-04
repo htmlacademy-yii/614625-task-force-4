@@ -1,4 +1,8 @@
-<?php use yii\helpers\Url;?>
+<?php 
+
+use yii\helpers\Url;
+use app\models\Tasks;
+?>
 <main class="main-content container">
     <div class="left-column">
         <div class="head-wrapper">
@@ -6,11 +10,23 @@
             <p class="price price--big"><?=$task->budget;?> ₽</p>
         </div>
         <p class="task-description">
-        <?=$task->description;?>
+            <?=$task->description;?>
         </p>
-        <a href="#" class="button button--blue action-btn" data-action="act_response">Откликнуться на задание</a>
-        <a href="#" class="button button--orange action-btn" data-action="refusal">Отказаться от задания</a>
-        <a href="#" class="button button--pink action-btn" data-action="completion">Завершить задание</a>
+
+        <?php if ($task->status === Tasks::STATUS_NEW && Yii::$app->user->identity->is_customer !== 1 && !Yii::$app->user->identity->getIsUserAcceptedTask($task->id)): ?>
+            <a href="#" class="button button--blue action-btn" data-action="act_response">Откликнуться на задание</a>
+        <?php endif; ?>
+
+        <?php if ($task->status === Tasks::STATUS_WORKING && $task->customer_id === Yii::$app->user->id): ?>
+            <a href="#" class="button button--orange action-btn" data-action="refusal">Отказаться от задания</a>
+        <?php endif; ?>
+        <?php if ($task->status === Tasks::STATUS_WORKING && $task->customer_id === Yii::$app->user->id): ?>
+            <a href="#" class="button button--pink action-btn" data-action="completion">Завершить задание</a>
+        <?php endif; ?>
+        <?php if ($task->status === Tasks::STATUS_NEW && $task->customer_id === Yii::$app->user->id): ?>
+            <a href="#" class="button button--pink action-btn" data-action="cancel">Отменить задание</a>
+        <?php endif; ?>
+
         <div class="task-map">
             <img class="map" src="img/map.png"  width="725" height="346" alt="Новый арбат, 23, к. 1">
             <p class="map-address town"><?=$task->location->cities->name?></p>
