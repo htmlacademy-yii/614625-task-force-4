@@ -92,10 +92,13 @@ class TasksController extends AuthController
     }
 
     //меняет статус отклика на отклонен по идентификатору
-    public function actionCancelr()
-    {
-        echo 'cancelr';
-        exit;
+    public function actionCancelr($id,$responseId)
+    {   
+        $response = Responses::findOne($responseId);  
+        $response->is_rejected = 1;      
+        $response->update();
+
+        return $this->redirect(['tasks/view', 'id' => $id]);
     }
 
     //меняет статус задания на отменено и отклоняет все отклики на него

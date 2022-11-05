@@ -39,34 +39,35 @@ use yii\helpers\Html;
         <h4 class="head-regular">Отклики на задание</h4>
 
         <?php foreach ($task->responses as $response): ?>
-
-            <div class="response-card">
-                <img class="customer-photo" src="<?=$response->user->avatar?>" width="146" height="156" alt="Фото заказчиков">
-                <div class="feedback-wrapper">
-                    <a href="<?php echo $url = Url::toRoute(['user/view', 'id' => $response->id])?>" class="link link--block link--big"><?=$response->user->name?></a>
-                    <div class="response-wrapper">
-                        <div class="stars-rating small"><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span>&nbsp;</span></div>
-                        <p class="reviews">2 отзыва</p>
+            <?php if(!$response->is_rejected):?>
+                <div class="response-card">
+                    <img class="customer-photo" src="<?=$response->user->avatar?>" width="146" height="156" alt="Фото заказчиков">
+                    <div class="feedback-wrapper">
+                        <a href="<?php echo $url = Url::toRoute(['user/view', 'id' => $response->id])?>" class="link link--block link--big"><?=$response->user->name?></a>
+                        <div class="response-wrapper">
+                            <div class="stars-rating small"><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span>&nbsp;</span></div>
+                            <p class="reviews">2 отзыва</p>
+                        </div>
+                        <p class="response-message">
+                            <?=$response->text?>
+                        </p>
                     </div>
-                    <p class="response-message">
-                        <?=$response->text?>
-                    </p>
-                </div>
-                <div class="feedback-wrapper">
-                    <p class="info-text"><span class="current-time"><?=Yii::$app->formatter->asRelativeTime($response->creation_time)?></p>
-                    <p class="price price--small"><?=$response->price?> ₽</p>
-                </div>
+                    <div class="feedback-wrapper">
+                        <p class="info-text"><span class="current-time"><?=Yii::$app->formatter->asRelativeTime($response->creation_time)?></p>
+                        <p class="price price--small"><?=$response->price?> ₽</p>
+                    </div>
 
-                <!-- Сделать проверку на отклоненный отзыв или нет -->
-                <?php if ($task->customer_id === Yii::$app->user->id && $task->status === Tasks::STATUS_NEW): ?>
-                <div class="button-popup">
-                    <?=Html::a('Принять', ['tasks/submit', 'id' => $task->id, 'responseId' => $response->id],
-                        ['class' => 'button button--blue button--small']); ?>
-                    <?= Html::a('Отказать', ['tasks/cancelr', 'id' => $task->id, 'responseId' => $response->id],
-                        ['class' => 'button button--orange button--small']); ?>
+                    <!-- Сделать проверку на отклоненный отзыв или нет -->
+                    <?php if ($task->customer_id === Yii::$app->user->id && $task->status === Tasks::STATUS_NEW):?>
+                    <div class="button-popup">
+                        <?=Html::a('Принять', ['tasks/submit', 'id' => $task->id, 'responseId' => $response->id],
+                            ['class' => 'button button--blue button--small']); ?>
+                        <?= Html::a('Отказать', ['tasks/cancelr', 'id' => $task->id, 'responseId' => $response->id],
+                            ['class' => 'button button--orange button--small']); ?>
+                    </div>
+                    <?php endif; ?>
                 </div>
-                <?php endif; ?>
-            </div>
+            <?php endif;?>
         <?php endforeach;?>
     </div>
     <div class="right-column">
