@@ -9,6 +9,8 @@ use app\models\forms\TaskCreateForm;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use app\services\TaskCreateService;
+use app\models\forms\CompleteTaskForm;
+use app\models\forms\ResponseForm;
 
 class TasksController extends AuthController
 {
@@ -31,11 +33,18 @@ class TasksController extends AuthController
     {
         $task = Tasks::findOne($id);
 
+        $completeTaskForm = new CompleteTaskForm();
+        $responseForm = new ResponseForm();
+
         if (!$task) {
             throw new NotFoundHttpException("По указанному id задача не найдена");
         }
 
-        return $this->render('view', ['task' => $task]);
+        return $this->render('view', [
+            'task' => $task,
+            'CompleteTaskForm' => $completeTaskForm,
+            'ResponseForm' => $responseForm
+        ]);
     }
 
     public function actionCreate()
@@ -66,7 +75,8 @@ class TasksController extends AuthController
     //новый отклик на задание
     public function actionAccept()
     {
-
+        echo 'accept';
+        exit;
     }
 
     //меняет статус отклика на отклонен по идентификатору
@@ -75,15 +85,17 @@ class TasksController extends AuthController
 
     }
 
-    //меняет статус задания на отменноно и отклоняет все отклики на него
+    //меняет статус задания на отменено и отклоняет все отклики на него
     public function actionCancelt()
     {
-
+        echo 'cancelt';
+        exit;
     }
 
     //меняет статус задания на выполнено
-    public function actionEnd(){
-
+    public function actionComplete(){
+        echo 'complete';
+        exit;
     }
 
     //меняет статус задания на провалено и отлоняет все отклики на него

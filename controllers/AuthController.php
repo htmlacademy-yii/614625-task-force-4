@@ -26,7 +26,7 @@ class AuthController extends Controller
                         'roles' => ['@']
                     ],
                     [
-                        'actions' => ['create', 'owner', 'submit', 'end', 'cancelt', 'cancelr'],
+                        'actions' => ['create', 'owner', 'submit', 'complete', 'cancelt', 'cancelr'],
                         'allow' => true,
                         'roles' => ['@'],
                         //'matchCallback' => fn () => !Yii::$app->user->identity->is_executor,

@@ -164,6 +164,6 @@ class Users extends ActiveRecord implements IdentityInterface
 
     public function getIsUserAcceptedTask($taskId)
     {
-        return Response::findOne(['task_id' => $taskId, 'executor_id' => $this->id]);
+        return Responses::findOne(['task_id' => $taskId, 'user_id' => $this->id]);
     }
 }
