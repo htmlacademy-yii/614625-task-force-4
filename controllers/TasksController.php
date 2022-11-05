@@ -68,10 +68,14 @@ class TasksController extends AuthController
     }
 
     //статус отклика меняет на принят 
-    public function actionSubmit()
-    {
-        echo 'submit';
-        exit;
+    public function actionSubmit($id, $responseId)
+    {   
+        $response = Responses::findOne($responseId);
+        $task = Tasks::findOne($id);
+        $task->status = Tasks::STATUS_WORKING;
+        $task->executor_id = $response->user_id;
+        $task->update();
+        return $this->redirect(['tasks/view', 'id' => $id]);
     }
 
     //новый отклик на задание
@@ -102,10 +106,16 @@ class TasksController extends AuthController
     }
 
     //меняет статус задания на отменено и отклоняет все отклики на него
-    public function actionCancelt()
+    public function actionCancelt($id)
     {
-        echo 'cancelt';
-        exit;
+        $task = Tasks::findOne($id);
+        $task->status = Tasks::STATUS_CANCELED;
+        $task->update();
+        foreach ($task->responses as $response){
+            $response->is_rejected = 1;
+            $response->update();
+        }
+        return $this->redirect('/tasks');
     }
 
     //меняет статус задания на выполнено
@@ -114,9 +124,11 @@ class TasksController extends AuthController
         exit;
     }
 
-    //меняет статус задания на провалено и отлоняет все отклики на него
-    public function actionFail(){
-        echo 'fail';
-        exit;
+    //меняет статус задания на провалено
+    public function actionFail( $id){
+        $task = Tasks::findOne($id);
+        $task->status = Tasks::STATUS_FAILED;
+        $task->update();
+        return $this->redirect('/tasks');
     }
 }
