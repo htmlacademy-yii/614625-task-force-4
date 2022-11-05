@@ -3,6 +3,8 @@ namespace app\models\forms;
 
 use Yii;
 use yii\base\Model;
+use app\models\Tasks;
+use app\models\Users;
 
 class CompleteTaskForm extends Model
 {
@@ -15,7 +17,7 @@ class CompleteTaskForm extends Model
     public function rules()
     {
         return [
-            [['task_id', 'customer_id', 'executor_id', 'text', 'review'], 'required'],
+            [['task_id', 'customer_id', 'executor_id', 'text', 'stars'], 'required'],
             ['customer_id', 'exist', 'targetClass' => Users::class, 'targetAttribute' => ['customer_id' => 'id']],
             ['executor_id', 'exist', 'targetClass' => Users::class, 'targetAttribute' => ['executor_id' => 'id']],
             ['text', 'string', 'min' => 10, 'max' => 256],

@@ -1,5 +1,4 @@
 <?php
-
 namespace app\controllers;
 
 use app\models\forms\TasksForm;
@@ -12,6 +11,7 @@ use app\services\TaskCreateService;
 use app\models\forms\CompleteTaskForm;
 use app\models\forms\ResponseForm;
 use app\models\Responses;
+use app\models\Reviews;
 
 class TasksController extends AuthController
 {
@@ -119,9 +119,27 @@ class TasksController extends AuthController
     }
 
     //меняет статус задания на выполнено
-    public function actionComplete(){
-        echo 'complete';
-        exit;
+    public function actionComplete($id){
+
+        $completeTaskForm = new CompleteTaskForm();
+        $completeTaskForm->load(Yii::$app->request->post());
+
+        if ($completeTaskForm->validate()){
+            $task = Tasks::findOne($id);
+            $task->status = Tasks::STATUS_COMPLETED;
+            $task->update();
+
+            $review = new Reviews;
+            $review->creation_time = date('Y-m-d H:i:s');
+            $review->task_id = $id;
+            $review->stars = $completeTaskForm->stars;
+            $review->user_id = $completeTaskForm->executor_id;
+            $review->text = $completeTaskForm->text;
+            $review->save();
+
+            return $this->redirect(['tasks/view', 'id' => $id]);
+        }
+
     }
 
     //меняет статус задания на провалено
