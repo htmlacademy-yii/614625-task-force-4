@@ -56,6 +56,8 @@ use yii\helpers\Html;
                     <p class="info-text"><span class="current-time"><?=Yii::$app->formatter->asRelativeTime($response->creation_time)?></p>
                     <p class="price price--small"><?=$response->price?> ₽</p>
                 </div>
+
+                <!-- Сделать проверку на отклоненный отзыв или нет -->
                 <?php if ($task->customer_id === Yii::$app->user->id && $task->status === Tasks::STATUS_NEW): ?>
                 <div class="button-popup">
                     <?=Html::a('Принять', ['tasks/submit', 'id' => $task->id, 'responseId' => $response->id],

@@ -11,6 +11,7 @@ use yii\web\NotFoundHttpException;
 use app\services\TaskCreateService;
 use app\models\forms\CompleteTaskForm;
 use app\models\forms\ResponseForm;
+use app\models\Responses;
 
 class TasksController extends AuthController
 {
@@ -74,10 +75,20 @@ class TasksController extends AuthController
     }
 
     //новый отклик на задание
-    public function actionAccept()
+    public function actionAccept($id)
     {
-        echo 'accept';
-        exit;
+        $responseForm = new ResponseForm();
+        $responseForm->load(Yii::$app->request->post());
+        if ($responseForm->validate()) {
+            $response = new Responses();
+            $response->creation_time = date('Y-m-d H:i:s');
+            $response->task_id = $id;
+            $response->user_id = Yii::$app->user->identity->id;
+            $response->text = $responseForm->text;
+            $response->price = $responseForm->price;
+            $response->save();
+            return $this->redirect(['tasks/view', 'id' => $id]);
+        }
     }
 
     //меняет статус отклика на отклонен по идентификатору
