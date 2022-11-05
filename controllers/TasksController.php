@@ -69,7 +69,8 @@ class TasksController extends AuthController
     //статус отклика меняет на принят 
     public function actionSubmit()
     {
-
+        echo 'submit';
+        exit;
     }
 
     //новый отклик на задание
@@ -82,7 +83,8 @@ class TasksController extends AuthController
     //меняет статус отклика на отклонен по идентификатору
     public function actionCancelr()
     {
-
+        echo 'cancelr';
+        exit;
     }
 
     //меняет статус задания на отменено и отклоняет все отклики на него

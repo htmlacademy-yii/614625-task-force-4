@@ -2,7 +2,7 @@
 
 use yii\helpers\Url;
 use app\models\Tasks;
-
+use yii\helpers\Html;
 ?>
 <main class="main-content container">
     <div class="left-column">
@@ -56,10 +56,14 @@ use app\models\Tasks;
                     <p class="info-text"><span class="current-time"><?=Yii::$app->formatter->asRelativeTime($response->creation_time)?></p>
                     <p class="price price--small"><?=$response->price?> ₽</p>
                 </div>
+                <?php if ($task->customer_id === Yii::$app->user->id && $task->status === Tasks::STATUS_NEW): ?>
                 <div class="button-popup">
-                    <a href="#" class="button button--blue button--small">Принять</a>
-                    <a href="#" class="button button--orange button--small">Отказать</a>
+                    <?=Html::a('Принять', ['tasks/submit', 'responseId' => $response->id],
+                        ['class' => 'button button--blue button--small']); ?>
+                    <?= Html::a('Отказать', ['tasks/cancelr', 'responseId' => $response->id],
+                        ['class' => 'button button--orange button--small']); ?>
                 </div>
+                <?php endif; ?>
             </div>
         <?php endforeach;?>
     </div>
