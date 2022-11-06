@@ -29,12 +29,10 @@ use yii\widgets\ActiveForm;
 
             <?=$form->field($model, 'text')->textarea()->label('Ваш комментарий');?>
             <?= Html::tag('p', 'Оценка работы', ['class' => 'completion-head control-label']) ?>
-
-            <?//= Html::activeHiddenInput($model, 'stars') ?>
-            <?=$form->field($model, 'stars')->input('number', ['min' => 0, 'max' => 5]);?>
-            <!-- <div class="stars-rating big active-stars">
+            
+            <?= Html::activeHiddenInput($model, 'stars') ?><div class="stars-rating big active-stars">
                 <span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span>
-            </div> -->
+            </div>
 
             <?= Html::submitInput('Завершить', ['class' => 'button button--pop-up button--blue']) ?>
             <?php ActiveForm::end(); ?>

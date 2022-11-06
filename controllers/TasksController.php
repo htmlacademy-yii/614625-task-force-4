@@ -123,7 +123,6 @@ class TasksController extends AuthController
 
         $completeTaskForm = new CompleteTaskForm();
         $completeTaskForm->load(Yii::$app->request->post());
-
         if ($completeTaskForm->validate()){
             $task = Tasks::findOne($id);
             $task->status = Tasks::STATUS_COMPLETED;
