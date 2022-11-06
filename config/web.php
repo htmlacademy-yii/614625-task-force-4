@@ -17,6 +17,11 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'py17HhFm9MrOl15szri-gAtWc7KzebmA',
         ],
+        'geocoder' => [
+            'class' => 'app\components\Geocoder',
+            'baseUri' => 'https://geocode-maps.yandex.ru/',
+            'apiKey' => 'e666f398-c983-4bde-8f14-e3fec900592a'
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
