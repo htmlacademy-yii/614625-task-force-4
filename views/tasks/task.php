@@ -1,6 +1,7 @@
 <?php
 use yii\widgets\ActiveForm;
 use app\models\Categories;
+use app\calculate\MainCalculate;
 use yii\helpers\Url;
 ?>
 <main class="main-content container">
@@ -13,7 +14,7 @@ use yii\helpers\Url;
                     <a  href="<?php echo $url = Url::toRoute(['tasks/view', 'id' => $task->id])?>" class="link link--block link--big"><?=$task->title;?></a>
                     <p class="price price--task"><?=$task->budget?> ₽</p>
                 </div>
-                <p class="info-text"><span class="current-time">4 часа </span>назад</p>
+                <p class="info-text"><span class="current-time"><?=MainCalculate::normalizeDate($task->creation_time)?> </span>назад</p>
                 <p class="task-text"><?=$task->description?></p>
                 <div class="footer-task">
                     <p class="info-text town-text"><?=$task->location->cities->name?>, <?=$task->location->name?></p>

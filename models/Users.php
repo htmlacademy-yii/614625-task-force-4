@@ -161,4 +161,9 @@ class Users extends ActiveRecord implements IdentityInterface
     {
         return $this->hasMany(UserCategories::class, ['user_id' => 'id']);
     }
+
+    public function getIsUserAcceptedTask($taskId)
+    {
+        return Responses::findOne(['task_id' => $taskId, 'user_id' => $this->id]);
+    }
 }
