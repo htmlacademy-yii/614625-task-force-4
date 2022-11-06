@@ -32,7 +32,7 @@ use yii\helpers\Html;
         <?php endif; ?>
 
         <div class="task-map">
-            <img class="map" src="img/map.png"  width="725" height="346" alt="Новый арбат, 23, к. 1">
+            <div id="map" class="map" style="width:725px;height:346px;"></div>
             <p class="map-address town"><?=$task->location->cities->name?></p>
             <p class="map-address"><?=$task->location->name?></p>
         </div>
@@ -99,6 +99,15 @@ use yii\helpers\Html;
     </div>
 </main>
 
+<script type="text/javascript">
+ymaps.ready(init);
+function init(){
+    var myMap = new ymaps.Map("map", {
+        center: [<?=$task->location->latitude ?>, <?= $task->location->longitude?>],
+        zoom: 14
+    });
+}
+</script>
 <?=$this->render('fail', ['task' => $task]) ?>
 <?=$this->render('complete', ['model' => $CompleteTaskForm, 'task' => $task]) ?>
 <?=$this->render('addResponse', ['model' => $ResponseForm, 'task' => $task]) ?>
