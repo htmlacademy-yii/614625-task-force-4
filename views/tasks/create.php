@@ -27,11 +27,7 @@ $categories = ArrayHelper::map(Categories::find()->all(), 'id', 'name');
             <?=$createForm->field($taskCreateForm, 'category', ['labelOptions' => ['for' => 'town-user','class' => 'control-label'],
                 'inputOptions' => ['id' => 'town-user']])->dropDownList($categories); ?>
             </div>
-            <div class="form-group">
-                <label class="control-label" for="location">Локация</label>
-                <input class="location-icon" id="location" type="text">
-                <span class="help-block">Error description is here</span>
-            </div>
+            <?=$createForm->field($taskCreateForm, 'location')->textInput(['labelOptions' => 'control-label'])?>
             <div class="half-wrapper">
                 <div class="form-group">
                     <?=$createForm->field($taskCreateForm, 'budget', [

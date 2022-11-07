@@ -35,6 +35,7 @@ class TaskCreateForm extends Model
             ['description', 'string', 'min' => 10,'max' => 255],
             [['dateCompletion'], 'compare', 'compareValue' => date('Y-m-d'),'operator' => '>', 'type' => 'date',
                 'message' => 'Дата выполнения задания не может быть раньше текущей даты'],
+            [['location'], 'string'],
             ['category', 'exist', 'targetClass' => Categories::class,'targetAttribute' => ['category' => 'id']],
             ['budget', 'integer', 'min' => 1],
             [['files'], 'file'],

@@ -6,6 +6,7 @@ use app\models\Tasks;
 use app\models\TaskFiles;
 use app\models\Files;
 use yii\web\UploadedFile;
+use app\models\Locations;
 
 class TaskCreateService
 {
@@ -55,8 +56,19 @@ class TaskCreateService
         $newTask->title = $taskCreateForm->name;
         $newTask->description = $taskCreateForm->description;
         $newTask->category_id = $taskCreateForm->category;
-        $newTask->location_id = 1;
+
         $user = Yii::$app->user->getIdentity();
+
+        $location = new Locations();
+        $location->creation_time = date("Y-m-d H:i:s");
+        $location->name = $this->getNameLocation($taskCreateForm->location);
+        $location->longitude = $this->getLong($taskCreateForm->location);
+        $location->latitude = $this->getLat($taskCreateForm->location);
+        $location->cities_id = $user->city_id;
+        $location->save();
+
+        $newTask->customer_id = $user->id;
+        $newTask->location_id = $location->id;
         $newTask->customer_id = $user->id;
         $newTask->status = 'new';
         $newTask->budget = $taskCreateForm->budget;
@@ -78,4 +90,20 @@ class TaskCreateService
     public function saveUploadFiles($files, $task_id) {
         return $this->serviceSaveFiles($this->serviceUploadFiles($files), $task_id);
     }
+
+    private function getLong($location)
+    {
+        return Yii::$app->geocoder->getLong($location);
+    }
+
+    private function getLat($location)
+    {
+        return Yii::$app->geocoder->getLat($location);
+    }
+
+    private function getNameLocation($location)
+    {
+        return Yii::$app->geocoder->getAddress($location);
+    }
+
 }

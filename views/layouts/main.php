@@ -30,6 +30,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Taskforce</title>
     <link rel="stylesheet" href="../css/style.css">
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=<?= Yii::$app->geocoder->getApiKey() ?>&lang=ru_RU" type="text/javascript"></script>
 </head>
 <body>
 <?php $this->beginBody() ?>
