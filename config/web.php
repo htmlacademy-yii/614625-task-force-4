@@ -24,7 +24,7 @@ $config = [
                     'class' => 'yii\authclient\clients\VKontakte',
                     'clientId' => '51470420',
                     'clientSecret' => 'MJvlX4bZP35cmefXRiwM',
-                    'returnUrl' => 'http://task-force/login/auth',
+                    'returnUrl' => 'http://task-force/login/vk',
                     'scope' => 'email'
                 ],
             ],
