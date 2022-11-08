@@ -6,6 +6,7 @@ $this->title = 'TaskForce';
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use app\models\forms\LoginForm;
+use yii\authclient\widgets\AuthChoice;
 ?>
 <main>
 <div class="landing-container">
@@ -119,4 +120,12 @@ use app\models\forms\LoginForm;
     <?php ActiveForm::end(); ?>
 
 <button class="form-modal-close" type="button">Закрыть</button>
+<?php $authAuthChoice = AuthChoice::begin([
+        'baseAuthUrl' => ['login/auth'],
+        'popupMode' => false,
+    ]); ?>
+    <?php foreach ($authAuthChoice->getClients() as $client): ?>
+        <?= $authAuthChoice->clientLink($client, "Войти через {$client->getTitle()}") ?>
+    <?php endforeach; ?>
+    <?php AuthChoice::end(); ?>
 </section>
