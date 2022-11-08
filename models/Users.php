@@ -79,6 +79,8 @@ class Users extends ActiveRecord implements IdentityInterface
             [['name'], 'string', 'max' => 122],
             [['email', 'password', 'telegram', 'phone', 'avatar'], 'string', 'max' => 64],
             [['email'], 'unique'],
+            [['vk_id'], 'unique'],
+            [['vk_id'], 'integer'],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cities::class, 'targetAttribute' => ['city_id' => 'id']],
         ];
     }
@@ -99,6 +101,7 @@ class Users extends ActiveRecord implements IdentityInterface
             'telegram' => 'Telegram',
             'phone' => 'Phone',
             'avatar' => 'Avatar',
+            'vk_id' => 'Vk Id',
         ];
     }
 

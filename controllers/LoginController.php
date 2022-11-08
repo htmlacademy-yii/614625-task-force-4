@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\web\Controller;
 use GuzzleHttp\Client;
 use app\models\Users;
+use app\models\Cities;
 
 class LoginController extends Controller
 {
@@ -26,17 +27,24 @@ class LoginController extends Controller
         $accessToken = $vkClient->fetchAccessToken($code);
         $userAttributes = $vkClient->getUserAttributes();
 
-        //далее проверяем если такой пользователь есть, то авторизуем
+        $user = Users::findOne(['vk_id' => $userAttributes['user_id']]);
+        if ($user){
+            Yii::$app->user->login($user);
+            return $this->redirect('/tasks');
+        }
+        $newUser = new Users();
+        $newUser->creation_time = date("Y-m-d H:i:s");
+        $newUser->name = $userAttributes["first_name"] . ' ' . $userAttributes["last_name"];
+        $newUser->email = $userAttributes["email"];
 
-        //иначе сохраняем и авторизуем
-
-        print_r('<pre>');
-        var_dump($userAttributes);
-        print_r('</pre>');
-        exit;
-
-
-
+        $city = Cities::findOne(['name' => $userAttributes["city"]['title']]);
+        $newUser->city_id = $city->id;
+        
+        $newUser->password = 'asdasdsa';
+        $newUser->is_customer = 1;
+        $newUser->vk_id = $userAttributes["user_id"];
+        $newUser->save();
+        Yii::$app->user->login($newUser);
+        return $this->redirect('/tasks');
     }
-
 }

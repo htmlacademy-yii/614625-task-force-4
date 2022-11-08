@@ -22,7 +22,7 @@ CREATE TABLE users (
     telegram varchar(64),
     phone varchar(64),
     avatar varchar(64),
-    vk_id varchar(128) UNIQUE,
+    vk_id int UNIQUE,
     FOREIGN KEY (city_id) REFERENCES cities(id)
 );
 
