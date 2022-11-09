@@ -7,6 +7,7 @@ use app\models\Tasks;
 use app\models\forms\TaskCreateForm;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\data\ActiveDataProvider;
 use app\services\TaskCreateService;
 use app\models\forms\CompleteTaskForm;
 use app\models\forms\ResponseForm;
@@ -17,14 +18,20 @@ class TasksController extends AuthController
 {
     public function actionIndex() {
         $taskForm = new TasksForm();
-        $tasks = $taskForm->getTasks()->all();
+        $tasks = new ActiveDataProvider([
+            'query' => $taskForm->getTasks(),
+            'pagination' => ['pageSize' => Yii::$app->params['pageSize']],
+        ]);
 
         if (Yii::$app->request->getIsPost()){
             $taskForm->load(Yii::$app->request->post());
             if (!$taskForm->validate()) {
                 $errors = $this->getErrors();
             } else {
-                $tasks = $taskForm->getFilterTasks();
+                $tasks = new ActiveDataProvider([
+                    'query' => $taskForm->getFilterTasks(),
+                    'pagination' => ['pageSize' => Yii::$app->params['pageSize']],
+                ]);
             }
         }
         return $this->render('task', ['tasks' => $tasks, 'model' => $taskForm]);
@@ -65,6 +72,25 @@ class TasksController extends AuthController
         }
 
         return $this->render('create', ['taskCreateForm' => $taskCreateForm]);
+    }
+
+    public function actionMy()
+    {   
+        $taskForm = new TasksForm();
+        if(Yii::$app->user->identity->is_customer === 1){
+            $tasks = new ActiveDataProvider([
+                'query' => $taskForm->getMyCustomerTasks(Yii::$app->user->id),
+                'pagination' => ['pageSize' => Yii::$app->params['pageSize']],
+            ]);
+        }
+        if(Yii::$app->user->identity->is_customer !== 1){
+            $tasks = new ActiveDataProvider([
+                'query' => $taskForm->getMyExecutorTasks(Yii::$app->user->id),
+                'pagination' => ['pageSize' => Yii::$app->params['pageSize']],
+            ]);
+        }
+    
+        return $this->render('my', ['tasks' => $tasks]);
     }
 
     //статус отклика меняет на принят 

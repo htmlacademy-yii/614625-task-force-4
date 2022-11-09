@@ -37,37 +37,41 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
 
 <header class="page-header">
     <nav class="main-nav">
-        <a href='#' class="header-logo">
+        <a href='/' class="header-logo">
             <img class="logo-image" src="../img/logotype.png" width=227 height=60 alt="taskforce">
         </a>
+        <?php if (!Yii::$app->user->isGuest):?>
         <div class="nav-wrapper">
             <ul class="nav-list">
-                <li class="list-item list-item--active">
-                    <a class="link link--nav" >Новое</a>
+                <li class="list-item <?php if (Yii::$app->request->url === '/tasks') echo 'list-item--active';?> ">
+                    <a href="/tasks/" class="link link--nav" >Новое</a>
                 </li>
                 <li class="list-item">
-                    <a href="#" class="link link--nav" >Мои задания</a>
+                    <a href="/tasks/my" class="link link--nav">Мои задания</a>
                 </li>
+                <?php if (Yii::$app->user->identity->is_customer === 1):?>
                 <li class="list-item">
-                    <a href="#" class="link link--nav" >Создать задание</a>
+                    <a href="/tasks/create" class="link link--nav">Создать задание</a>
                 </li>
+                <?php endif;?>
                 <li class="list-item">
-                    <a href="#" class="link link--nav" >Настройки</a>
+                    <a href="/user/optionsmenu" class="link link--nav">Настройки</a>
                 </li>
             </ul>
         </div>
+        <?php endif;?>
     </nav>
     <?php if (!Yii::$app->user->isGuest):?>
     <div class="user-block">
         <a href="#">
-            <img class="user-photo" src="<?= (Yii::$app->user->getIdentity()->avatar);?>" width="55" height="55" alt="Аватар">
+            <img class="user-photo" src="/uploads/<?=(Yii::$app->user->getIdentity()->avatar);?>" width="55" height="55" alt="Аватар">
         </a>
         <div class="user-menu">
             <p class="user-name"><?= (Yii::$app->user->getIdentity()->name); ?></p>
             <div class="popup-head">
                 <ul class="popup-menu">
                     <li class="menu-item">
-                        <a href="#" class="link">Настройки</a>
+                        <a href="/user/optionsmenu" class="link">Настройки</a>
                     </li>
                     <li class="menu-item">
                         <a href="#" class="link">Связаться с нами</a>
