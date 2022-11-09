@@ -45,8 +45,21 @@ use yii\helpers\Html;
                     <div class="feedback-wrapper">
                         <a href="<?php echo $url = Url::toRoute(['user/view', 'id' => $response->id])?>" class="link link--block link--big"><?=$response->user->name?></a>
                         <div class="response-wrapper">
-                            <div class="stars-rating small"><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span class="fill-star">&nbsp;</span><span>&nbsp;</span></div>
-                            <p class="reviews">2 отзыва</p>
+                            <?php 
+                            $summaStars = 0;
+                            foreach ($response->user->reviews as $key => $review) {
+                             $summaStars = $summaStars + $review->stars;
+                            }
+                            $meanStars = round($summaStars / count($response->user->reviews));?>
+                            <div class="stars-rating small">
+                                <?php for ($i=0; $i < $meanStars; $i++) :?> 
+                                        <span class="fill-star">&nbsp;</span>
+                                <?php endfor;?>
+                                <?php for ($k = 5; $k > $meanStars; $k--) :?>
+                                    <span>&nbsp;</span>
+                                <?php endfor;?>
+                            </div>
+                            <p class="reviews"><?=count($response->user->reviews);?> отзыва</p>
                         </div>
                         <p class="response-message">
                             <?=$response->text?>
