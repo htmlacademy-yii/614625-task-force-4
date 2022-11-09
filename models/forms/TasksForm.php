@@ -39,7 +39,7 @@ class TasksForm extends Model
             $this->choosePeriod($activeQuery);
         }
 
-        return $activeQuery->all(); 
+        return $activeQuery; 
     }
 
     public function attributeLabels()
