@@ -82,6 +82,8 @@ class Users extends ActiveRecord implements IdentityInterface
             [['vk_id'], 'unique'],
             [['vk_id'], 'integer'],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cities::class, 'targetAttribute' => ['city_id' => 'id']],
+            [['description'], 'string', 'max' =>256],
+            [['bdate'],'date', 'format' => 'php:Y-m-d'],
         ];
     }
 
@@ -102,6 +104,7 @@ class Users extends ActiveRecord implements IdentityInterface
             'phone' => 'Phone',
             'avatar' => 'Avatar',
             'vk_id' => 'Vk Id',
+            'description' => 'Description',
         ];
     }
 

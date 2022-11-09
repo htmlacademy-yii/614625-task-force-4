@@ -7,6 +7,8 @@ use yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use app\models\forms\PasswordForm;
+use app\models\forms\OptionsForm;
+use yii\web\UploadedFile;
 
 class UserController extends AuthController
 {
@@ -38,8 +40,21 @@ class UserController extends AuthController
     }
 
     public function actionOptions()
-    {
-        return $this->render('options');
+    {   
+        $optionsForm = new OptionsForm();
+
+        if (Yii::$app->request->getIsPost()) {
+            $optionsForm->load(Yii::$app->request->post());
+            $optionsForm->file = UploadedFile::getInstance($optionsForm, 'file');
+  
+            if ($optionsForm->validate()) {
+                $optionsForm->loadToUser();
+
+                return $this->redirect(['view', 'id' => Yii::$app->user->id]);
+            }
+        }
+
+        return $this->render('options', ['model' => $optionsForm]);
     }
 
     public function actionOptionsmenu()

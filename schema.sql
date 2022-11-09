@@ -23,6 +23,8 @@ CREATE TABLE users (
     phone varchar(64),
     avatar varchar(64),
     vk_id int UNIQUE,
+    description varchar(256),
+    bdate date,
     FOREIGN KEY (city_id) REFERENCES cities(id)
 );
 
