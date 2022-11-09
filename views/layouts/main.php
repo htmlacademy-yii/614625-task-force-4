@@ -69,10 +69,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
             <div class="popup-head">
                 <ul class="popup-menu">
                     <li class="menu-item">
-                        <a href="#" class="link">Настройки</a>
+                        <a href="/user/optionsmenu" class="link">Настройки</a>
                     </li>
                     <li class="menu-item">
-                        <a href="/user/optionsmenu" class="link">Связаться с нами</a>
+                        <a href="#" class="link">Связаться с нами</a>
                     </li>
                     <li class="menu-item">
                         <a href="<?= Url::toRoute('/site/logout') ;?>" class="link">Выход из системы</a>

@@ -3,8 +3,10 @@
 namespace app\controllers;
 
 use app\models\Users;
+use yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use app\models\forms\PasswordForm;
 
 class UserController extends AuthController
 {
@@ -20,7 +22,19 @@ class UserController extends AuthController
 
     public function actionPassword()
     {
-        return $this->render('password');
+        $passwordForm = new PasswordForm();
+
+        if (Yii::$app->request->getIsPost()) {
+            $passwordForm->load(Yii::$app->request->post());
+           
+            if ($passwordForm->validate()) {
+                $passwordForm->loadToUser();
+                
+                return $this->redirect(['view', 'id' => Yii::$app->user->id]);
+            }
+        }
+
+        return $this->render('password', ['model' => $passwordForm]);
     }
 
     public function actionOptions()

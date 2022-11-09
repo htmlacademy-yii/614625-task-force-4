@@ -1,7 +1,5 @@
 <?php
-
 use yii\widgets\Menu; ?>
-<main class="main-content main-content--left container">
     <div class="left-menu left-menu--edit">
         <h3 class="head-main head-task">Настройки</h3>
         <?= Menu::widget(['items' => [
@@ -15,4 +13,3 @@ use yii\widgets\Menu; ?>
             'itemOptions'=>['class'=>'side-menu-item'],
         ]);?>
     </div>
-</main>
