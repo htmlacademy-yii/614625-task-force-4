@@ -42,17 +42,19 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
         </a>
         <div class="nav-wrapper">
             <ul class="nav-list">
-                <li class="list-item list-item--active">
-                    <a class="link link--nav" >Новое</a>
+                <li class="list-item <?php if (Yii::$app->request->url === '/tasks') echo 'list-item--active';?> ">
+                    <a href="/tasks/" class="link link--nav" >Новое</a>
                 </li>
                 <li class="list-item">
-                    <a href="#" class="link link--nav" >Мои задания</a>
+                    <a href="" class="link link--nav" >Мои задания</a>
                 </li>
+                <?php if (Yii::$app->user->identity->is_customer === 1):?>
                 <li class="list-item">
-                    <a href="#" class="link link--nav" >Создать задание</a>
+                    <a href="/tasks/create" class="link link--nav" >Создать задание</a>
                 </li>
+                <?php endif;?>
                 <li class="list-item">
-                    <a href="#" class="link link--nav" >Настройки</a>
+                    <a href="/user/optionsmenu" class="link link--nav" >Настройки</a>
                 </li>
             </ul>
         </div>
@@ -70,7 +72,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
                         <a href="#" class="link">Настройки</a>
                     </li>
                     <li class="menu-item">
-                        <a href="#" class="link">Связаться с нами</a>
+                        <a href="/user/optionsmenu" class="link">Связаться с нами</a>
                     </li>
                     <li class="menu-item">
                         <a href="<?= Url::toRoute('/site/logout') ;?>" class="link">Выход из системы</a>

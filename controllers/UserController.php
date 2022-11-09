@@ -17,4 +17,19 @@ class UserController extends AuthController
         }
         return $this->render('view', ['user' => $user]);
     }
+
+    public function actionPassword()
+    {
+        return $this->render('password');
+    }
+
+    public function actionOptions()
+    {
+        return $this->render('options');
+    }
+
+    public function actionOptionsmenu()
+    {
+        return $this->render('optionsmenu');
+    }
 }

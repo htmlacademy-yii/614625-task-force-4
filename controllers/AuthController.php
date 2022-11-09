@@ -18,7 +18,7 @@ class AuthController extends Controller
                 },
                 'rules' => [
                     [
-                        'actions' => ['index', 'view', 'accept', 'fail'],
+                        'actions' => ['index', 'view', 'accept', 'fail','optionsmenu','options','password'],
                         'allow' => true,
                         'roles' => ['@']
                     ],
