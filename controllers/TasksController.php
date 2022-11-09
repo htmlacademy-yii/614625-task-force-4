@@ -18,13 +18,10 @@ class TasksController extends AuthController
 {
     public function actionIndex() {
         $taskForm = new TasksForm();
-        //$tasks = $taskForm->getTasks()->all();
         $tasks = new ActiveDataProvider([
             'query' => $taskForm->getTasks(),
             'pagination' => ['pageSize' => Yii::$app->params['pageSize']],
         ]);
-        // var_dump($tasks);
-        // exit;
 
         if (Yii::$app->request->getIsPost()){
             $taskForm->load(Yii::$app->request->post());
