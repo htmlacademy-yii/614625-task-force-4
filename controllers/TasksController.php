@@ -74,6 +74,25 @@ class TasksController extends AuthController
         return $this->render('create', ['taskCreateForm' => $taskCreateForm]);
     }
 
+    public function actionMy()
+    {   
+        $taskForm = new TasksForm();
+        if(Yii::$app->user->identity->is_customer === 1){
+            $tasks = new ActiveDataProvider([
+                'query' => $taskForm->getMyCustomerTasks(Yii::$app->user->id),
+                'pagination' => ['pageSize' => Yii::$app->params['pageSize']],
+            ]);
+        }
+        if(Yii::$app->user->identity->is_customer !== 1){
+            $tasks = new ActiveDataProvider([
+                'query' => $taskForm->getMyExecutorTasks(Yii::$app->user->id),
+                'pagination' => ['pageSize' => Yii::$app->params['pageSize']],
+            ]);
+        }
+    
+        return $this->render('my', ['tasks' => $tasks]);
+    }
+
     //статус отклика меняет на принят 
     public function actionSubmit($id, $responseId)
     {   
