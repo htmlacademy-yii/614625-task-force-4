@@ -172,4 +172,18 @@ class Users extends ActiveRecord implements IdentityInterface
     {
         return Responses::findOne(['task_id' => $taskId, 'user_id' => $this->id]);
     }
+
+    public function getExecutedTasks()
+    {
+        return Tasks::find()
+            ->andFilterWhere(['executor_id' => $this->id])
+            ->andFilterWhere(['status' => Tasks::STATUS_COMPLETED]);
+    }
+
+    public function getFailedTasks()
+    {
+        return Tasks::find()
+            ->andFilterWhere(['executor_id' => $this->id])
+            ->andFilterWhere(['status' => Tasks::STATUS_FAILED]);
+    }
 }

@@ -50,7 +50,11 @@ use yii\helpers\Html;
                             foreach ($response->user->reviews as $key => $review) {
                              $summaStars = $summaStars + $review->stars;
                             }
-                            $meanStars = round($summaStars / count($response->user->reviews));?>
+                            $meanStars = 0;
+                            if($summaStars>0){
+                                $meanStars = round($summaStars / count($response->user->reviews));
+                            }
+                            ?>
                             <div class="stars-rating small">
                                 <?php for ($i=0; $i < $meanStars; $i++) :?> 
                                         <span class="fill-star">&nbsp;</span>
