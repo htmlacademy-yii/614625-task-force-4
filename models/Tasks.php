@@ -165,4 +165,9 @@ class Tasks extends \yii\db\ActiveRecord
     {
         return $this->hasMany(TaskFiles::class, ['task_id' => 'id']);
     }
+
+    public function getFiles()
+    {
+        return $this->hasMany(TaskFiles::className(), ['task_id' => 'id']);
+    }
 }

@@ -100,19 +100,21 @@ use yii\helpers\Html;
                 <dd><?=$task->getStatusName()?></dd>
             </dl>
         </div>
+
+        <?php if ($task->files):?>
         <div class="right-card white file-card">
             <h4 class="head-card">Файлы задания</h4>
             <ul class="enumeration-list">
+                <?php foreach ($task->files as $file) :?>
                 <li class="enumeration-item">
-                    <a href="#" class="link link--block link--clip">my_picture.jpg</a>
-                    <p class="file-size">356 Кб</p>
+                    <a href="<?=$file->file->path?>" class="link link--block link--clip"><?=$file->file->name?></a>
+                    <p class="file-size"><?=Yii::$app->formatter->asSize(filesize(Yii::$app->basePath . '/web/' . $file->file->path));?></p>
                 </li>
-                <li class="enumeration-item">
-                    <a href="#" class="link link--block link--clip">information.docx</a>
-                    <p class="file-size">12 Кб</p>
-                </li>
+                <?php endforeach;?>
             </ul>
         </div>
+        <?php endif;?>
+
     </div>
 </main>
 
