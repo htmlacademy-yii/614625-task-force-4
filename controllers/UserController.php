@@ -42,7 +42,8 @@ class UserController extends AuthController
     public function actionOptions()
     {   
         $optionsForm = new OptionsForm();
-
+        $user = Users::findOne(Yii::$app->user->id);
+        
         if (Yii::$app->request->getIsPost()) {
             $optionsForm->load(Yii::$app->request->post());
             $optionsForm->file = UploadedFile::getInstance($optionsForm, 'file');
@@ -54,7 +55,7 @@ class UserController extends AuthController
             }
         }
 
-        return $this->render('options', ['model' => $optionsForm]);
+        return $this->render('options', ['model' => $optionsForm, 'user' => $user]);
     }
 
     public function actionOptionsmenu()
