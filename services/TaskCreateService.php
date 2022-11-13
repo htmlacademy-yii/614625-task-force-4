@@ -7,6 +7,7 @@ use app\models\TaskFiles;
 use app\models\Files;
 use yii\web\UploadedFile;
 use app\models\Locations;
+use app\models\Cities;
 
 class TaskCreateService
 {
@@ -61,19 +62,38 @@ class TaskCreateService
 
         $location = new Locations();
         $location->creation_time = date("Y-m-d H:i:s");
-        $location->name = $this->getNameLocation($taskCreateForm->location);
-        $location->longitude = $this->getLong($taskCreateForm->location);
-        $location->latitude = $this->getLat($taskCreateForm->location);
+        $city = Cities::findOne($user->city_id);
+        $location->name = $this->getNameLocation($city->name);
+        $location->longitude = $city->longitude;
+        $location->latitude = $city->latitude;
+
+        if($taskCreateForm->location){
+            $location->name = $this->getNameLocation($taskCreateForm->location);
+            $location->longitude = $this->getLong($taskCreateForm->location);
+            $location->latitude = $this->getLat($taskCreateForm->location);
+        }
         $location->cities_id = $user->city_id;
-        $location->save();
+
+        $checkLocation = Locations::findOne(['name' => $location->name]);
+        if($checkLocation){
+            $newTask->location_id = $checkLocation->id;
+        } else {
+            $location->save();
+            $newTask->location_id = $location->id;
+        };
 
         $newTask->customer_id = $user->id;
-        $newTask->location_id = $location->id;
         $newTask->customer_id = $user->id;
         $newTask->status = 'new';
-        $newTask->budget = $taskCreateForm->budget;
-        $newTask->date_completion = $taskCreateForm->dateCompletion;
-
+        $newTask->budget = 0;
+        if($taskCreateForm->budget){
+            $newTask->budget = $taskCreateForm->budget;
+        }
+        $newTask->date_completion = date("Y-m-d H:i:s");
+        if($taskCreateForm->dateCompletion){
+            $newTask->date_completion = $taskCreateForm->dateCompletion;
+        }
+        
         if($newTask->validate()) {
             
             $newTask->taskFiles = UploadedFile::getInstances($taskCreateForm, 'files');    
