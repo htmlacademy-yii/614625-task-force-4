@@ -15,7 +15,13 @@ class TaskCreateService
 {
     private $path = 'uploads';
 
-    private function serviceUploadFiles($files){
+    /**
+     * Загружает файлы на сервер
+     * @param $files array массив с файлами
+     * @return array $uploadFiles
+     */
+    private function serviceUploadFiles($files)
+    {
         $uploadFiles = [];
 
         foreach ($files as $key => $file) {
@@ -34,6 +40,12 @@ class TaskCreateService
         return $uploadFiles;
     }
 
+    /**
+     * Сохраняет файлы задания
+     * @param $files array массив с файлами
+     * @param $taskId int задачи
+     * @return void
+     */
     private function serviceSaveFiles($files, $taskId)
     {
         foreach ($files as $file) {
@@ -51,6 +63,11 @@ class TaskCreateService
         }
     }
 
+    /**
+     * Создает задание
+     * @param $taskCreateForm объект taskCreateForm
+     * @return void
+     */
     public function create($taskCreateForm)
     {
         $newTask = new Tasks();
@@ -109,11 +126,23 @@ class TaskCreateService
         }
     }
 
+    /**
+     * Полная загрузка файлов на сервер и в бд
+     * @param $files array массив с файлами
+     * @param $taskId int задачи
+     * @return function
+     */
     public function saveUploadFiles($files, $task_id) 
     {
         return $this->serviceSaveFiles($this->serviceUploadFiles($files), $task_id);
     }
 
+    /**
+     * Создает отклик
+     * @param id int пользователя
+     * @param $responseForm объект responseForm
+     * @return void
+     */
     public function createResponse($id, $responseForm)
     {
         $response = new Responses();
@@ -125,6 +154,12 @@ class TaskCreateService
         return $response->save();
     }
 
+    /**
+     * Создает отзыв
+     * @param id int пользователя
+     * @param $completeTaskForm объект completeTaskForm
+     * @return void
+     */
     public function createReview($id, $completeTaskForm)
     {
         $review = new Reviews;
@@ -136,16 +171,31 @@ class TaskCreateService
         return $review->save();
     }
 
+    /**
+     * Получает longitude локации
+     * @param $location строка с локации с формы
+     * @return decimal
+     */
     private function getLong($location)
     {
         return Yii::$app->geocoder->getLong($location);
     }
 
+    /**
+     * Получает latutude локации
+     * @param $location строка с локации с формы
+     * @return decimal
+     */
     private function getLat($location)
     {
         return Yii::$app->geocoder->getLat($location);
     }
 
+    /**
+     * Получает адрес локации
+     * @param $location строка с локации с формы
+     * @return string
+     */
     private function getNameLocation($location)
     {
         return Yii::$app->geocoder->getAddress($location);

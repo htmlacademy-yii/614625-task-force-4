@@ -7,6 +7,11 @@ use app\models\Cities;
 
 class UserCreateService {
 
+    /**
+     * Создает пользователя с формы регистрации
+     * @param $registrationForm объект registrationForm
+     * @return void
+     */
     public function create($registrationForm){
         $user = new Users;
         $user->creation_time = date('Y-m-d G:i:s');
@@ -21,6 +26,11 @@ class UserCreateService {
         return $user->save();
     }
 
+    /**
+     * Создает пользователя через вк 
+     * @param $userAttributes массив с данными пользователя
+     * @return Users
+     */
     public function createVk($userAttributes){
         $newUser = new Users();
         $newUser->creation_time = date("Y-m-d H:i:s");
