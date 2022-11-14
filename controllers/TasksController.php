@@ -84,8 +84,8 @@ class TasksController extends AuthController
                 'query' => $taskFilter->getFilteredCustomerTasks(),
                 'pagination' => ['pageSize' => Yii::$app->params['pageSize']],
             ]);
-            
         }
+        
         if(Yii::$app->user->identity->is_customer !== 1){
             $tasks = new ActiveDataProvider([
                 'query' => $taskFilter->getFilteredExecutorTasks(),
