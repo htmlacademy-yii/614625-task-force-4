@@ -65,7 +65,7 @@ class SiteController extends Controller
                 return ActiveForm::validate($loginForm);
             }
 
-            if ($loginForm->validate()){
+            if ($loginForm->validate()) {
                 $identity = $loginForm->getUser();
                 Yii::$app->user->login($identity);
 

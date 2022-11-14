@@ -10,6 +10,7 @@ use yii\web\Controller;
 use GuzzleHttp\Client;
 use app\models\Users;
 use app\models\Cities;
+use app\services\UserCreateService;
 
 class LoginController extends Controller
 {
@@ -32,18 +33,8 @@ class LoginController extends Controller
             Yii::$app->user->login($user);
             return $this->redirect('/tasks');
         }
-        $newUser = new Users();
-        $newUser->creation_time = date("Y-m-d H:i:s");
-        $newUser->name = $userAttributes["first_name"] . ' ' . $userAttributes["last_name"];
-        $newUser->email = $userAttributes["email"];
-
-        $city = Cities::findOne(['name' => $userAttributes["city"]['title']]);
-        $newUser->city_id = $city->id;
-        
-        $newUser->password = 'asdasdsa';
-        $newUser->is_customer = 1;
-        $newUser->vk_id = $userAttributes["user_id"];
-        $newUser->save();
+        $service = new UserCreateService();
+        $newUser = $service->createVk($userAttributes);
         Yii::$app->user->login($newUser);
         return $this->redirect('/tasks');
     }

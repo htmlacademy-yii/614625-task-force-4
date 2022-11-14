@@ -13,17 +13,19 @@ use app\models\forms\CompleteTaskForm;
 use app\models\forms\ResponseForm;
 use app\models\Responses;
 use app\models\Reviews;
+use TaskForce\TaskFilter;
 
 class TasksController extends AuthController
 {
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $taskForm = new TasksForm();
         $tasks = new ActiveDataProvider([
             'query' => $taskForm->getTasks(),
             'pagination' => ['pageSize' => Yii::$app->params['pageSize']],
         ]);
 
-        if (Yii::$app->request->getIsPost()){
+        if (Yii::$app->request->getIsPost()) {
             $taskForm->load(Yii::$app->request->post());
             if (!$taskForm->validate()) {
                 $errors = $this->getErrors();
@@ -74,18 +76,20 @@ class TasksController extends AuthController
         return $this->render('create', ['taskCreateForm' => $taskCreateForm]);
     }
 
-    public function actionMy()
+    public function actionMy($type)
     {   
-        $taskForm = new TasksForm();
-        if(Yii::$app->user->identity->is_customer === 1){
+        $taskFilter = new TaskFilter($type, Yii::$app->user->id);
+
+        if (Yii::$app->user->identity->is_customer === 1) {
             $tasks = new ActiveDataProvider([
-                'query' => $taskForm->getMyCustomerTasks(Yii::$app->user->id),
+                'query' => $taskFilter->getFilteredCustomerTasks(),
                 'pagination' => ['pageSize' => Yii::$app->params['pageSize']],
             ]);
         }
-        if(Yii::$app->user->identity->is_customer !== 1){
+        
+        if (Yii::$app->user->identity->is_customer !== 1) {
             $tasks = new ActiveDataProvider([
-                'query' => $taskForm->getMyExecutorTasks(Yii::$app->user->id),
+                'query' => $taskFilter->getFilteredExecutorTasks(),
                 'pagination' => ['pageSize' => Yii::$app->params['pageSize']],
             ]);
         }
@@ -110,13 +114,10 @@ class TasksController extends AuthController
         $responseForm = new ResponseForm();
         $responseForm->load(Yii::$app->request->post());
         if ($responseForm->validate()) {
-            $response = new Responses();
-            $response->creation_time = date('Y-m-d H:i:s');
-            $response->task_id = $id;
-            $response->user_id = Yii::$app->user->identity->id;
-            $response->text = $responseForm->text;
-            $response->price = $responseForm->price;
-            $response->save();
+
+            $service = new taskCreateService();
+            $service->createResponse($id, $responseForm);
+            
             return $this->redirect(['tasks/view', 'id' => $id]);
         }
     }
@@ -145,22 +146,17 @@ class TasksController extends AuthController
     }
 
     //меняет статус задания на выполнено
-    public function actionComplete($id){
-
+    public function actionComplete($id)
+    {
         $completeTaskForm = new CompleteTaskForm();
         $completeTaskForm->load(Yii::$app->request->post());
-        if ($completeTaskForm->validate()){
+        if ($completeTaskForm->validate()) {
             $task = Tasks::findOne($id);
             $task->status = Tasks::STATUS_COMPLETED;
             $task->update();
 
-            $review = new Reviews;
-            $review->creation_time = date('Y-m-d H:i:s');
-            $review->task_id = $id;
-            $review->stars = $completeTaskForm->stars;
-            $review->user_id = $completeTaskForm->executor_id;
-            $review->text = $completeTaskForm->text;
-            $review->save();
+            $service = new TaskCreateService();
+            $service->createReview($id, $completeTaskForm);
 
             return $this->redirect(['tasks/view', 'id' => $id]);
         }
@@ -168,7 +164,8 @@ class TasksController extends AuthController
     }
 
     //меняет статус задания на провалено
-    public function actionFail( $id){
+    public function actionFail( $id)
+    {
         $task = Tasks::findOne($id);
         $task->status = Tasks::STATUS_FAILED;
         $task->update();

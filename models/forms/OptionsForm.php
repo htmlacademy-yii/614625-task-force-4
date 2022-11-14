@@ -1,14 +1,12 @@
 <?php
 namespace app\models\forms;
 
-use app\models\Categories;
-use app\models\Users;
-use app\models\UserCategories;
 use Yii;
 use yii\base\Model;
 use yii\db\ActiveQuery;
 use yii\db\Query;
 use yii\web\UploadedFile;
+use app\models\Categories;
 
 class OptionsForm extends Model
 {
@@ -20,7 +18,7 @@ class OptionsForm extends Model
     public $description;
     public $userCategory;
     public $file;
-    private $filePath;
+    public $filePath;
     const PHONE_NUM_LENGTH = 11;
     const TELEGRAM_LENGTH = 64;
 
@@ -52,59 +50,4 @@ class OptionsForm extends Model
         ];
     }
 
-    public function loadToUser(): void
-    {
-        if (!$this->uploadFile() && $this->file) {
-            throw new FileUploadException('Загрузить файл не удалось');
-        }
-        
-        $user = Users::findOne(Yii::$app->user->id);
-        $user->name = $this->login;
-        $user->email = $this->email; 
-        $user->bdate = $this->bdate;
-        $user->phone = $this->phone;
-        $user->telegram = $this->telegram;
-        $user->description = $this->description;
-        $user->avatar = $this->filePath;
-
-        $transaction = Yii::$app->db->beginTransaction();
-
-        try {
-            if (!empty($this->userCategory)) {
-                $this->loadUserCategory();
-            }
-            if (!$user->save()) {
-                throw new Exception('Не удалось сохранить модель User');
-            }
-            $transaction->commit();
-        } catch (Exception $exception) {
-            $transaction->rollback();
-            throw new Exception($exception->getMessage());
-        }
-
-    }
-
-    public function loadUserCategory(): void
-    {
-        UserCategories::deleteByUser(Yii::$app->user->id);
-
-        foreach ($this->userCategory as $category) {
-            $userCategory = new UserCategories();
-            $userCategory->user_id = Yii::$app->user->id;
-            $userCategory->category_id = $category;
-            $userCategory->save();
-        }
-    }
-
-    private function uploadFile(): bool
-    {
-        if ($this->file && $this->validate()) {
-            $newName = uniqid('upload') . '.' . $this->file->getExtension();
-            $this->file->saveAs('@webroot/uploads/' . $newName);
-
-            $this->filePath = $newName;
-            return true;
-        }
-        return false;
-    }
 }

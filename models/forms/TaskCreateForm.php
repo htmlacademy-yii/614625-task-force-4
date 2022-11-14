@@ -38,7 +38,7 @@ class TaskCreateForm extends Model
             [['location'], 'string'],
             ['category', 'exist', 'targetClass' => Categories::class,'targetAttribute' => ['category' => 'id']],
             ['budget', 'integer', 'min' => 1],
-            [['files'], 'file'],
+            [['files'], 'file', 'skipOnEmpty' => true,'maxFiles' => 4,'checkExtensionByMimeType' => false],
         ];
     }
 }

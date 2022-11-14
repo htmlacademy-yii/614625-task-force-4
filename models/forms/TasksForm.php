@@ -18,7 +18,12 @@ class TasksForm extends Model
     const DAY = 24;
     const WEEK = 168;
     
-    public function getTasks(){
+    /**
+     * Возвращает запрос на новые задания 
+     * @return ActiveQuery
+     */
+    public function getTasks()
+    {
         $activeQuery = Tasks::find();
         $activeQuery->joinWith('location');
         $activeQuery->joinWith('category');
@@ -26,14 +31,12 @@ class TasksForm extends Model
         return $activeQuery;
     }
 
-    public function getAllTasks(){
-        $activeQuery = Tasks::find();
-        $activeQuery->joinWith('location');
-        $activeQuery->joinWith('category');
-        return $activeQuery;
-    }
-
-    public function getFilterTasks(){
+    /**
+     * Возвращает запрос на новые задания с учетом фильтрации
+     * @return ActiveQuery
+     */
+    public function getFilterTasks()
+    {
         $activeQuery = $this->getTasks();
 
         if ($this->noExecutor) {
@@ -49,22 +52,6 @@ class TasksForm extends Model
         return $activeQuery; 
     }
 
-    public function getMyCustomerTasks($userId){
-        $activeQuery = $this->getAllTasks();
-
-        $activeQuery->andWhere(['customer_id' => $userId]);
-
-        return $activeQuery; 
-    }
-
-    public function getMyExecutorTasks($userId){
-        $activeQuery = $this->getAllTasks();
-
-        $activeQuery->andWhere(['executor_id' => $userId]);
-        
-        return $activeQuery; 
-    }
-
     public function attributeLabels()
     {
         return [
@@ -74,7 +61,12 @@ class TasksForm extends Model
         ];
     }
 
-    private function choosePeriod($activeQuery){
+    /**
+     * Возвращает условие фильтрации по времени
+     * @return ActiveQuery
+     */
+    private function choosePeriod($activeQuery)
+    {
         switch ($this->period) {
             case self::ONE_HOUR:
                 return $activeQuery->andFilterWhere(['>', 'tasks.creation_time', new Expression('CURRENT_TIMESTAMP() - INTERVAL 1 HOUR')]);

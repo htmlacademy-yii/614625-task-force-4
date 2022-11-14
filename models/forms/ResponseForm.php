@@ -15,7 +15,7 @@ class ResponseForm extends Model
     {
         return [
             [['task_id', 'price', 'text'], 'required'],
-            ['price', 'integer'],
+            [['price'], 'compare', 'compareValue' => 0, 'operator' => '>', 'type' => 'number'],
             ['text', 'string', 'min' => 10, 'max' => 255],
             ['task_id', 'exist', 'targetClass' => Tasks::class, 'targetAttribute' => ['task_id' => 'id']],
         ];

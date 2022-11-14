@@ -30,6 +30,11 @@ class PasswordForm extends Model
         ];
     }
 
+    /**
+     * Сравнивает пароль введенный пользователем с паролем, хранящимся в БД
+     * @param $attribute
+     * @return void
+     */
     public function validatePassword($attribute)
     {
         if (!$this->hasErrors()) {
@@ -39,12 +44,5 @@ class PasswordForm extends Model
                 $this->addError($attribute, 'Неверный пароль');
             }
         }
-    }
-
-    public function loadToUser()
-    {
-        $user = Users::findOne(Yii::$app->user->id);
-        $user->password = Yii::$app->getSecurity()->generatePasswordHash($this->newPassword);
-        $user->save();
     }
 }

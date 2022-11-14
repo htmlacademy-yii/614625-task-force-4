@@ -16,17 +16,18 @@ use yii\helpers\Html;
                 </div>
                 <?= $form->field($model, 'file')->fileInput(['hidden' => ''])->label('Сменить аватар', ['class' => 'button button--black']) ?>
             </div>
-            <?= $form->field($model, 'login')->textInput(['labelOptions' => ['class' => 'control-label']])?>
+            <?= $form->field($model, 'login')->textInput(['value' => $user->name],['labelOptions' => ['class' => 'control-label']])?>
             <div class="half-wrapper">
-                <?= $form->field($model, 'email')->input('email', ['labelOptions' => ['class' => 'control-label']]) ?>
-                <?= $form->field($model, 'bdate')->input('date', ['format' => 'php:dd.mm.YYYY', 'labelOptions' => ['class' => 'control-label']]) ?>
+                <?= $form->field($model, 'email')->input('email', ['value' => $user->email], ['labelOptions' => ['class' => 'control-label']]) ?>
+                <?= $form->field($model, 'bdate')->input('date', ['value' => $user->bdate], ['format' => 'php:dd.mm.YYYY', 'labelOptions' => ['class' => 'control-label']]) ?>
             </div>
             <div class="half-wrapper">
-                <?= $form->field($model, 'phone')->input('tel', ['labelOptions' => ['class' => 'control-label']])?>
-                <?= $form->field($model, 'telegram')->textInput(['labelOptions' => ['class' => 'control-label']])?>
+                <?= $form->field($model, 'phone')->input('tel', ['value' => $user->phone], ['labelOptions' => ['class' => 'control-label']])?>
+                <?= $form->field($model, 'telegram')->textInput(['value' => $user->telegram], ['labelOptions' => ['class' => 'control-label']])?>
             </div>
-                <?= $form->field($model, 'description')->textarea(['labelOptions' => ['class' => 'control-label']]) ?>
-            <div class="form-group">
+                <?= $form->field($model, 'description')->textarea(['value' => $user->description],['labelOptions' => ['class' => 'control-label']]) ?>
+            <?php if (!$user->is_customer):?>
+                <div class="form-group">
                     <?= $form->field($model, 'userCategory')->checkboxList(Categories::getCategoriesList(), [
                         'class' => 'checkbox-profile',
                         'itemOptions' => [
@@ -36,6 +37,7 @@ use yii\helpers\Html;
                         ],
                     ]) ?>
             </div>
+            <?php endif;?>
             <?=Html::SubmitInput('Сохранить', ['class' => 'button button--blue'])?>
             <?php ActiveForm::end() ?>
     </div>
