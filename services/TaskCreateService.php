@@ -8,6 +8,8 @@ use app\models\Files;
 use yii\web\UploadedFile;
 use app\models\Locations;
 use app\models\Cities;
+use app\models\Responses;
+use app\models\Reviews;
 
 class TaskCreateService
 {
@@ -107,8 +109,31 @@ class TaskCreateService
         }
     }
 
-    public function saveUploadFiles($files, $task_id) {
+    public function saveUploadFiles($files, $task_id) 
+    {
         return $this->serviceSaveFiles($this->serviceUploadFiles($files), $task_id);
+    }
+
+    public function createResponse($id, $responseForm)
+    {
+        $response = new Responses();
+        $response->creation_time = date('Y-m-d H:i:s');
+        $response->task_id = $id;
+        $response->user_id = Yii::$app->user->identity->id;
+        $response->text = $responseForm->text;
+        $response->price = $responseForm->price;
+        return $response->save();
+    }
+
+    public function createReview($id, $completeTaskForm)
+    {
+        $review = new Reviews;
+        $review->creation_time = date('Y-m-d H:i:s');
+        $review->task_id = $id;
+        $review->stars = $completeTaskForm->stars;
+        $review->user_id = $completeTaskForm->executor_id;
+        $review->text = $completeTaskForm->text;
+        return $review->save();
     }
 
     private function getLong($location)

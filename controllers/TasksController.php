@@ -113,13 +113,10 @@ class TasksController extends AuthController
         $responseForm = new ResponseForm();
         $responseForm->load(Yii::$app->request->post());
         if ($responseForm->validate()) {
-            $response = new Responses();
-            $response->creation_time = date('Y-m-d H:i:s');
-            $response->task_id = $id;
-            $response->user_id = Yii::$app->user->identity->id;
-            $response->text = $responseForm->text;
-            $response->price = $responseForm->price;
-            $response->save();
+
+            $service = new taskCreateService();
+            $service->createResponse($id, $responseForm);
+            
             return $this->redirect(['tasks/view', 'id' => $id]);
         }
     }
@@ -157,13 +154,8 @@ class TasksController extends AuthController
             $task->status = Tasks::STATUS_COMPLETED;
             $task->update();
 
-            $review = new Reviews;
-            $review->creation_time = date('Y-m-d H:i:s');
-            $review->task_id = $id;
-            $review->stars = $completeTaskForm->stars;
-            $review->user_id = $completeTaskForm->executor_id;
-            $review->text = $completeTaskForm->text;
-            $review->save();
+            $service = new TaskCreateService();
+            $service->createReview($id, $completeTaskForm);
 
             return $this->redirect(['tasks/view', 'id' => $id]);
         }
