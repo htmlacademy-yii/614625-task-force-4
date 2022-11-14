@@ -28,7 +28,12 @@ class LoginForm extends Model
         ];
     }
 
-    public function validatePassword($attribute, $params)
+    /**
+     * Сравнивает пароль введенный пользователем с хэшем пароля, хранящимся в БД
+     * @param $attribute
+     * @return void
+     */
+    public function validatePassword($attribute)
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
@@ -38,6 +43,10 @@ class LoginForm extends Model
         }
     }
 
+     /**
+     * Возвращает Объект пользователя, если находит
+     * @return User|null Пользователь или его отсутствие
+     */
     public function getUser()
     {
         if ($this->user === null) {

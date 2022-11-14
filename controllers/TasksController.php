@@ -17,7 +17,8 @@ use TaskForce\TaskFilter;
 
 class TasksController extends AuthController
 {
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $taskForm = new TasksForm();
         $tasks = new ActiveDataProvider([
             'query' => $taskForm->getTasks(),
@@ -79,14 +80,14 @@ class TasksController extends AuthController
     {   
         $taskFilter = new TaskFilter($type, Yii::$app->user->id);
 
-        if(Yii::$app->user->identity->is_customer === 1){
+        if (Yii::$app->user->identity->is_customer === 1) {
             $tasks = new ActiveDataProvider([
                 'query' => $taskFilter->getFilteredCustomerTasks(),
                 'pagination' => ['pageSize' => Yii::$app->params['pageSize']],
             ]);
         }
         
-        if(Yii::$app->user->identity->is_customer !== 1){
+        if (Yii::$app->user->identity->is_customer !== 1) {
             $tasks = new ActiveDataProvider([
                 'query' => $taskFilter->getFilteredExecutorTasks(),
                 'pagination' => ['pageSize' => Yii::$app->params['pageSize']],
@@ -145,11 +146,11 @@ class TasksController extends AuthController
     }
 
     //меняет статус задания на выполнено
-    public function actionComplete($id){
-
+    public function actionComplete($id)
+    {
         $completeTaskForm = new CompleteTaskForm();
         $completeTaskForm->load(Yii::$app->request->post());
-        if ($completeTaskForm->validate()){
+        if ($completeTaskForm->validate() {
             $task = Tasks::findOne($id);
             $task->status = Tasks::STATUS_COMPLETED;
             $task->update();
@@ -163,7 +164,8 @@ class TasksController extends AuthController
     }
 
     //меняет статус задания на провалено
-    public function actionFail( $id){
+    public function actionFail( $id)
+    {
         $task = Tasks::findOne($id);
         $task->status = Tasks::STATUS_FAILED;
         $task->update();

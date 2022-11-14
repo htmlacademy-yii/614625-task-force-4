@@ -15,7 +15,7 @@ class RegistrationController extends Controller
         $registrationForm = new RegistrationForm();
         if (Yii::$app->request->getIsPost()) {
             $registrationForm->load(Yii::$app->request->post());
-            if ($registrationForm->validate()){
+            if ($registrationForm->validate()) {
                 $service = new UserCreateService();
                 if (!$service->create($registrationForm)) {
                     throw new Exception('Не удалось сохранить данные');

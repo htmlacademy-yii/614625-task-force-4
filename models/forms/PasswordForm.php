@@ -30,6 +30,11 @@ class PasswordForm extends Model
         ];
     }
 
+    /**
+     * Сравнивает пароль введенный пользователем с паролем, хранящимся в БД
+     * @param $attribute
+     * @return void
+     */
     public function validatePassword($attribute)
     {
         if (!$this->hasErrors()) {

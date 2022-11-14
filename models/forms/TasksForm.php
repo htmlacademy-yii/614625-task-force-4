@@ -18,7 +18,12 @@ class TasksForm extends Model
     const DAY = 24;
     const WEEK = 168;
     
-    public function getTasks(){
+    /**
+     * Возвращает запрос на новые задания 
+     * @return ActiveQuery
+     */
+    public function getTasks()
+    {
         $activeQuery = Tasks::find();
         $activeQuery->joinWith('location');
         $activeQuery->joinWith('category');
@@ -26,14 +31,8 @@ class TasksForm extends Model
         return $activeQuery;
     }
 
-    public function getAllTasks(){
-        $activeQuery = Tasks::find();
-        $activeQuery->joinWith('location');
-        $activeQuery->joinWith('category');
-        return $activeQuery;
-    }
-
-    public function getFilterTasks(){
+    public function getFilterTasks()
+    {
         $activeQuery = $this->getTasks();
 
         if ($this->noExecutor) {
@@ -58,7 +57,8 @@ class TasksForm extends Model
         ];
     }
 
-    private function choosePeriod($activeQuery){
+    private function choosePeriod($activeQuery)
+    {
         switch ($this->period) {
             case self::ONE_HOUR:
                 return $activeQuery->andFilterWhere(['>', 'tasks.creation_time', new Expression('CURRENT_TIMESTAMP() - INTERVAL 1 HOUR')]);

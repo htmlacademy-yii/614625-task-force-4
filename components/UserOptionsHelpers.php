@@ -22,7 +22,7 @@ class UserOptionsHelpers
         $user->phone = $optionsForm->phone;
         $user->telegram = $optionsForm->telegram;
         $user->description = $optionsForm->description;
-        if($optionsForm->filePath){
+        if($optionsForm->filePath) {
             $user->avatar = $optionsForm->filePath;
         }
         
