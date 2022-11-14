@@ -6,7 +6,12 @@ use yii;
 
 class UserPasswordHelpers
 {
-    public function loadToUser($passWord)
+    /**
+     * Сохраняет изменненый пароль для пользователя
+     * @param $password string пароль с формы
+     * @return void
+     */
+    public function loadToUser($passWord) :void
     {
         $user = Users::findOne(Yii::$app->user->id);
         $user->password = Yii::$app->getSecurity()->generatePasswordHash($passWord);

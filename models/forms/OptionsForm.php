@@ -6,6 +6,7 @@ use yii\base\Model;
 use yii\db\ActiveQuery;
 use yii\db\Query;
 use yii\web\UploadedFile;
+use app\models\Categories;
 
 class OptionsForm extends Model
 {

@@ -9,6 +9,11 @@ use app\models\UserCategories;
 class UserOptionsHelpers
 {
 
+    /**
+     * Сохраняет данные со страницы настроек пользователя
+     * @param optionsForm объект с данными
+     * @return void
+     */
     public function loadToUser($optionsForm): void
     {
         if (!$this->uploadFile($optionsForm) && $optionsForm->file) {
@@ -44,6 +49,11 @@ class UserOptionsHelpers
 
     }
 
+    /**
+     * Сначала удаляет текущие категории у пользователя, потом сохраняет в бд выбранные
+     * @param optionsForm объект с данными
+     * @return void
+     */
     public function loadUserCategory($optionsForm): void
     {
         UserCategories::deleteByUser(Yii::$app->user->id);
@@ -56,6 +66,11 @@ class UserOptionsHelpers
         }
     }
 
+    /**
+     * Сохраняет аватарку
+     * @param optionsForm объект с данными
+     * @return bool
+     */
     private function uploadFile($optionsForm): bool
     {
         if ($optionsForm->file && $optionsForm->validate()) {

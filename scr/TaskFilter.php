@@ -19,6 +19,10 @@ class TaskFilter
         $this->type = $type;
     }
 
+    /**
+     * Возвращает запрос задания с учетом фильтрации для заказчика
+     * @return ActiveQuery
+     */
     public function getFilteredCustomerTasks()
     {
         $taskQuery = Tasks::find()
@@ -39,6 +43,10 @@ class TaskFilter
         return $taskQuery;
     }
 
+    /**
+     * Возвращает запрос задания с учетом фильтрации для исполнителя
+     * @return ActiveQuery
+     */
     public function getFilteredExecutorTasks()
     {
         $taskQuery = Tasks::find()
