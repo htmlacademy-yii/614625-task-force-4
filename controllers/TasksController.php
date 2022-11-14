@@ -25,7 +25,7 @@ class TasksController extends AuthController
             'pagination' => ['pageSize' => Yii::$app->params['pageSize']],
         ]);
 
-        if (Yii::$app->request->getIsPost()){
+        if (Yii::$app->request->getIsPost()) {
             $taskForm->load(Yii::$app->request->post());
             if (!$taskForm->validate()) {
                 $errors = $this->getErrors();
@@ -150,7 +150,7 @@ class TasksController extends AuthController
     {
         $completeTaskForm = new CompleteTaskForm();
         $completeTaskForm->load(Yii::$app->request->post());
-        if ($completeTaskForm->validate() {
+        if ($completeTaskForm->validate()) {
             $task = Tasks::findOne($id);
             $task->status = Tasks::STATUS_COMPLETED;
             $task->update();

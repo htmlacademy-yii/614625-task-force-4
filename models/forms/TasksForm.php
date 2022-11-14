@@ -31,6 +31,10 @@ class TasksForm extends Model
         return $activeQuery;
     }
 
+    /**
+     * Возвращает запрос на новые задания с учетом фильтрации
+     * @return ActiveQuery
+     */
     public function getFilterTasks()
     {
         $activeQuery = $this->getTasks();
@@ -57,6 +61,10 @@ class TasksForm extends Model
         ];
     }
 
+    /**
+     * Возвращает условие фильтрации по времени
+     * @return ActiveQuery
+     */
     private function choosePeriod($activeQuery)
     {
         switch ($this->period) {
