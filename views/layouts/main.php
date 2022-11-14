@@ -47,7 +47,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
                     <a href="/tasks/" class="link link--nav" >Новое</a>
                 </li>
                 <li class="list-item">
-                    <a href="/tasks/my" class="link link--nav">Мои задания</a>
+                    <a href="/tasks/my?type=new" class="link link--nav">Мои задания</a>
                 </li>
                 <?php if (Yii::$app->user->identity->is_customer === 1):?>
                 <li class="list-item">

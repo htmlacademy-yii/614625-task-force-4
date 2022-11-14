@@ -26,7 +26,8 @@ use yii\helpers\Html;
                 <?= $form->field($model, 'telegram')->textInput(['value' => $user->telegram], ['labelOptions' => ['class' => 'control-label']])?>
             </div>
                 <?= $form->field($model, 'description')->textarea(['value' => $user->description],['labelOptions' => ['class' => 'control-label']]) ?>
-            <div class="form-group">
+            <?php if (!$user->is_customer):?>
+                <div class="form-group">
                     <?= $form->field($model, 'userCategory')->checkboxList(Categories::getCategoriesList(), [
                         'class' => 'checkbox-profile',
                         'itemOptions' => [
@@ -36,6 +37,7 @@ use yii\helpers\Html;
                         ],
                     ]) ?>
             </div>
+            <?php endif;?>
             <?=Html::SubmitInput('Сохранить', ['class' => 'button button--blue'])?>
             <?php ActiveForm::end() ?>
     </div>

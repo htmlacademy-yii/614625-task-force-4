@@ -49,22 +49,6 @@ class TasksForm extends Model
         return $activeQuery; 
     }
 
-    public function getMyCustomerTasks($userId){
-        $activeQuery = $this->getAllTasks();
-
-        $activeQuery->andWhere(['customer_id' => $userId]);
-
-        return $activeQuery; 
-    }
-
-    public function getMyExecutorTasks($userId){
-        $activeQuery = $this->getAllTasks();
-
-        $activeQuery->andWhere(['executor_id' => $userId]);
-        
-        return $activeQuery; 
-    }
-
     public function attributeLabels()
     {
         return [

@@ -13,6 +13,7 @@ use app\models\forms\CompleteTaskForm;
 use app\models\forms\ResponseForm;
 use app\models\Responses;
 use app\models\Reviews;
+use TaskForce\TaskFilter;
 
 class TasksController extends AuthController
 {
@@ -74,18 +75,20 @@ class TasksController extends AuthController
         return $this->render('create', ['taskCreateForm' => $taskCreateForm]);
     }
 
-    public function actionMy()
+    public function actionMy($type)
     {   
-        $taskForm = new TasksForm();
+        $taskFilter = new TaskFilter($type, Yii::$app->user->id);
+
         if(Yii::$app->user->identity->is_customer === 1){
             $tasks = new ActiveDataProvider([
-                'query' => $taskForm->getMyCustomerTasks(Yii::$app->user->id),
+                'query' => $taskFilter->getFilteredCustomerTasks(),
                 'pagination' => ['pageSize' => Yii::$app->params['pageSize']],
             ]);
+            
         }
         if(Yii::$app->user->identity->is_customer !== 1){
             $tasks = new ActiveDataProvider([
-                'query' => $taskForm->getMyExecutorTasks(Yii::$app->user->id),
+                'query' => $taskFilter->getFilteredExecutorTasks(),
                 'pagination' => ['pageSize' => Yii::$app->params['pageSize']],
             ]);
         }
