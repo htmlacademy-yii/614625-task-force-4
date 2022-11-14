@@ -42,12 +42,6 @@ class Cities extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function getCityList()
-    {
-        $cityList = Cities::find()->select('id, name')->asArray()->all();
-        return ArrayHelper::map($cityList, 'id', 'name');
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -80,5 +74,15 @@ class Cities extends \yii\db\ActiveRecord
     public function getUsers()
     {
         return $this->hasMany(Users::class, ['city_id' => 'id']);
+    }
+
+    /**
+     * Получает массив городов занесенных в БД
+     * @return array
+     */
+    public static function getCityList() :array
+    {
+        $cityList = Cities::find()->select('id, name')->asArray()->all();
+        return ArrayHelper::map($cityList, 'id', 'name');
     }
 }

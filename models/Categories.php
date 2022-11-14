@@ -18,16 +18,7 @@ use yii\helpers\ArrayHelper;
  */
 class Categories extends \yii\db\ActiveRecord
 {
-    public static function getCategoriesList()
-    {
-        $data = static::find()
-            ->select(['id', 'name'])
-            ->orderBy('id')
-            ->asArray()
-            ->all();
-        return ArrayHelper::map($data, 'id', 'name');
-    }
-
+    
     /**
      * {@inheritdoc}
      */
@@ -80,5 +71,19 @@ class Categories extends \yii\db\ActiveRecord
     public function getUserCategories()
     {
         return $this->hasMany(UserCategories::class, ['category_id' => 'id']);
+    }
+
+    /**
+     * Получает доступные категории
+     * @return array
+     */
+    public static function getCategoriesList() :array
+    {
+        $data = static::find()
+            ->select(['id', 'name'])
+            ->orderBy('id')
+            ->asArray()
+            ->all();
+        return ArrayHelper::map($data, 'id', 'name');
     }
 }

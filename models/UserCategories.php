@@ -69,7 +69,12 @@ class UserCategories extends \yii\db\ActiveRecord
         return $this->hasOne(Users::class, ['id' => 'user_id']);
     }
 
-    public static function deleteByUser($userId)
+    /**
+     * Удаляет категории у пользователя
+     * @param $userId int
+     * @return
+     */
+    public static function deleteByUser($userId) :void
     {
         Yii::$app->db->createCommand()->delete('user_categories', ['user_id' => Yii::$app->user->id])->query();
     }
