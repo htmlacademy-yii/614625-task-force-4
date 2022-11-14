@@ -27,31 +27,55 @@ class Geocoder extends Component
         $this->client = new Client(['base_uri' => $this->baseUri]);
     }
 
-    public function getLong($adress)
+    /**
+     * Извлекает из ответа Геокодера долготу
+     * @param  $adress string Адрес, по которому ищутся координаты
+     * @return string Longitude
+     */
+    public function getLong($adress):string
     {
         $location = explode(' ', ArrayHelper::getValue($this->loadLocation($adress), self::GEOCODE_COORDINATES_KEY));
 
         return $location[self::GEOCODE_LONGITUDE];
     }
 
-    public function getLat($adress)
+    /**
+     * Извлекает из ответа Геокодера широту
+     * @param $adress string Адрес, по которому ищутся координаты
+     * @return string Longitude
+     */
+    public function getLat($adress):string
     {
         $location = explode(' ', ArrayHelper::getValue($this->loadLocation($adress), self::GEOCODE_COORDINATES_KEY));
 
         return $location[self::GEOCODE_LATITUDE];
     }
 
-    public function getAddress($adress)
+    /**
+     * Извлекает из ответа Геокодера адрес
+     * @param $adress string Координаты, по которым ищется адрес
+     * @return mixed Адреc
+     */
+    public function getAddress($adress):string
     {
         return ArrayHelper::getValue($this->loadLocation($adress), self::GEOCODER_ADDRESS_KEY);
     }
 
-    public function getApiKey()
+    /**
+     * Geocoder ApiKey
+     * @return string Возвращает АПИ ключ из конфига
+     */
+    public function getApiKey():string
     {
         return $this->apiKey;
     }
 
-    private function loadLocation($adress)
+    /**
+     * Связывается с ЯндексГеокодер и возвращает ответ в виде массива данных
+     * @param $adress string Адрес|координаты, которые передаются в API Геокодера
+     * @return mixed возвращает массив данных от Геокодера
+     */
+    private function loadLocation($adress):array
     {
         $response = $this->client->request('GET', '1.x',
             ['query' => ['apikey' => $this->apiKey, 'geocode' => $adress, 'format' => 'json']]);
