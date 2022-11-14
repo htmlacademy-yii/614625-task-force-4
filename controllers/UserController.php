@@ -9,6 +9,8 @@ use yii\web\NotFoundHttpException;
 use app\models\forms\PasswordForm;
 use app\models\forms\OptionsForm;
 use yii\web\UploadedFile;
+use app\components\UserPasswordHelpers;
+use app\components\UserOptionsHelpers;
 
 class UserController extends AuthController
 {
@@ -30,7 +32,8 @@ class UserController extends AuthController
             $passwordForm->load(Yii::$app->request->post());
            
             if ($passwordForm->validate()) {
-                $passwordForm->loadToUser();
+                $userHelpers = new UserPasswordHelpers();
+                $userHelpers->loadToUser($passwordForm->newPassword);
                 
                 return $this->redirect(['view', 'id' => Yii::$app->user->id]);
             }
@@ -49,7 +52,9 @@ class UserController extends AuthController
             $optionsForm->file = UploadedFile::getInstance($optionsForm, 'file');
   
             if ($optionsForm->validate()) {
-                $optionsForm->loadToUser();
+
+                $userHelpers = new UserOptionsHelpers();
+                $userHelpers->loadToUser($optionsForm);
 
                 return $this->redirect(['view', 'id' => Yii::$app->user->id]);
             }

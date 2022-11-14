@@ -40,11 +40,4 @@ class PasswordForm extends Model
             }
         }
     }
-
-    public function loadToUser()
-    {
-        $user = Users::findOne(Yii::$app->user->id);
-        $user->password = Yii::$app->getSecurity()->generatePasswordHash($this->newPassword);
-        $user->save();
-    }
 }
